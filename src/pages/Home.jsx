@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <section className="hero">
         <h1>
-          Hey, I&apos;m <span className="accent">Max</span>.
+          <span className="ghost">Hey, I&apos;m</span> Max.
         </h1>
         <p>I build things. Placeholder intro — say who you are and what you make.</p>
         <Link to="/projects" className="button">
@@ -15,10 +15,10 @@ export default function Home() {
         </Link>
       </section>
       <section>
-        <h2>Featured projects</h2>
-        <div className="grid">
-          {projects.map((p) => (
-            <ProjectCard key={p.slug} project={p} />
+        <h2 className="label">Featured projects</h2>
+        <div className="list">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.slug} project={p} index={i} />
           ))}
         </div>
       </section>

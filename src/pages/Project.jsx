@@ -20,7 +20,7 @@ export default function Project({ project: given }) {
       <Link to="/projects" className="back">
         ← All projects
       </Link>
-      <h1>{project.name}</h1>
+      <h1 className="page-title">{project.name}</h1>
       <p className="lead">{project.tagline}</p>
       <p>{project.description}</p>
       {project.tags.length > 0 && (

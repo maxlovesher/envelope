@@ -13,8 +13,8 @@ export default function Layout() {
   return (
     <>
       <header className="header">
-        <Link to="/" className="brand">
-          maxlovesher
+        <Link to="/" className="brand" aria-label="maxlovesher home">
+          M
         </Link>
         <nav className="nav">
           <NavLink to="/projects">Projects</NavLink>
