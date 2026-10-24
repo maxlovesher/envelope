@@ -22,18 +22,10 @@ export default function ProjectCard({ project, index }) {
         ))}
       </ul>
       <span className="arrow" aria-hidden="true">
-        {project.url ? '↗' : '→'}
+        →
       </span>
     </>
   )
-
-  if (project.url) {
-    return (
-      <a href={project.url} className="card" {...tint}>
-        {body}
-      </a>
-    )
-  }
 
   return (
     <Link to={`/${project.slug}`} className="card" {...tint}>

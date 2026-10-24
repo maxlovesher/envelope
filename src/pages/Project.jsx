@@ -1,44 +1,120 @@
-import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Reveal from '../components/Reveal.jsx'
 import { projects } from '../data/projects.js'
+import { setTint } from '../lib/tint.js'
 import NotFound from './NotFound.jsx'
 
 // Rendered at /<slug> (project passed as a prop) and /projects/:slug (looked up from the URL).
 export default function Project({ project: given }) {
   const { slug } = useParams()
-  const project = given ?? projects.find((p) => p.slug === slug)
-
-  useEffect(() => {
-    if (project?.url) window.location.replace(project.url)
-  }, [project])
+  const index = projects.findIndex((p) => p.slug === (given?.slug ?? slug))
+  const project = projects[index]
 
   if (!project) return <NotFound />
-  if (project.url) return null
+
+  const next = projects[(index + 1) % projects.length]
+  const { stats = [], highlights = [], how = [], stack = [], notes, status } = project
 
   return (
-    <article>
+    <article className="case">
       <Link to="/projects" className="back">
         ← All projects
       </Link>
+      <p className="kicker">
+        {String(index + 1).padStart(2, '0')}
+        {project.kind && <span> · {project.kind}</span>}
+      </p>
       <h1 className="page-title">{project.name}</h1>
       <p className="lead">{project.tagline}</p>
-      <p>{project.description}</p>
-      {project.tags.length > 0 && (
-        <ul className="tags">
-          {project.tags.map((t) => (
-            <li key={t}>{t}</li>
-          ))}
-        </ul>
-      )}
-      {project.links.length > 0 && (
-        <p className="links">
+
+      {(project.url || project.links.length > 0) && (
+        <p className="actions">
+          {project.url && (
+            <a className="button solid" href={project.url} target="_blank" rel="noreferrer">
+              Visit live site ↗
+            </a>
+          )}
           {project.links.map((l) => (
-            <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-              {l.label}
+            <a key={l.href} className="button" href={l.href} target="_blank" rel="noreferrer">
+              {l.label} ↗
             </a>
           ))}
         </p>
       )}
+
+      {stats.length > 0 && (
+        <dl className="stats">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <dt>{s.value}</dt>
+              <dd>{s.label}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      <section className="about">
+        <Reveal as="p" text={project.description} />
+      </section>
+
+      {highlights.length > 0 && (
+        <section>
+          <h2 className="label">What it does</h2>
+          <ul className="highlights">
+            {highlights.map((h, i) => (
+              <li key={h.title}>
+                <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{h.title}</h3>
+                <p>{h.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {how.length > 0 && (
+        <section>
+          <h2 className="label">How it works</h2>
+          <ol className="steps">
+            {how.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {stack.length > 0 && (
+        <section>
+          <h2 className="label">Built with</h2>
+          <ul className="tags flat">
+            {stack.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {(notes || status) && (
+        <section className="notes">
+          <h2 className="label">Good to know</h2>
+          {status && (
+            <p>
+              <b>Status.</b> {status}
+            </p>
+          )}
+          {notes && <p>{notes}</p>}
+        </section>
+      )}
+
+      <Link
+        to={`/${next.slug}`}
+        className="next"
+        onMouseEnter={() => setTint(next.tint)}
+        onMouseLeave={() => setTint(null)}
+      >
+        <span className="label">Next project</span>
+        <span className="next-name">{next.name} →</span>
+      </Link>
     </article>
   )
 }
