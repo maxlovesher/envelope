@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import NotFound from './NotFound.jsx'
@@ -7,7 +8,12 @@ export default function Project({ project: given }) {
   const { slug } = useParams()
   const project = given ?? projects.find((p) => p.slug === slug)
 
+  useEffect(() => {
+    if (project?.url) window.location.replace(project.url)
+  }, [project])
+
   if (!project) return <NotFound />
+  if (project.url) return null
 
   return (
     <article>
