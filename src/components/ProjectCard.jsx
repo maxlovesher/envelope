@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom'
+import { setTint } from '../lib/tint.js'
 
 export default function ProjectCard({ project, index }) {
+  const tint = {
+    onMouseEnter: () => setTint(project.tint),
+    onMouseLeave: () => setTint(null),
+    onFocus: () => setTint(project.tint),
+    onBlur: () => setTint(null),
+  }
+
   const body = (
     <>
       <span className="num">{String(index + 1).padStart(2, '0')}</span>
@@ -21,14 +29,14 @@ export default function ProjectCard({ project, index }) {
 
   if (project.url) {
     return (
-      <a href={project.url} className="card">
+      <a href={project.url} className="card" {...tint}>
         {body}
       </a>
     )
   }
 
   return (
-    <Link to={`/${project.slug}`} className="card">
+    <Link to={`/${project.slug}`} className="card" {...tint}>
       {body}
     </Link>
   )

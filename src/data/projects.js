@@ -6,6 +6,7 @@ const gh = (repo) => ({ label: 'GitHub', href: `https://github.com/maxlovesher/$
 export const projects = [
   {
     slug: 'canary',
+    tint: '#f6e9b0',
     name: 'Canary',
     tagline: 'Config-driven red-teaming harness for LLMs, RAG pipelines and agents.',
     description:
@@ -15,6 +16,7 @@ export const projects = [
   },
   {
     slug: 'ragbench',
+    tint: '#cfe0f5',
     name: 'RAGBench',
     tagline: 'Benchmarking retrieval-augmented generation pipelines.',
     description:
@@ -25,6 +27,7 @@ export const projects = [
   },
   {
     slug: 'velociti',
+    tint: '#c9ecdc',
     name: 'VeloCiTI',
     tagline: 'Vehicle Location and City Traffic Intelligence.',
     description:
@@ -35,6 +38,7 @@ export const projects = [
   },
   {
     slug: 'tapped-in',
+    tint: '#f6d3c8',
     name: 'Tapped In',
     tagline: 'A culture course for your friends, from hip-hop to memes to politics.',
     description:
@@ -45,6 +49,7 @@ export const projects = [
   },
   {
     slug: 'fiilter',
+    tint: '#ddd0f7',
     name: 'fiilter',
     tagline: 'Grade photos and videos with Lightroom-style templates.',
     description:
@@ -55,6 +60,7 @@ export const projects = [
   },
   {
     slug: 'mochi',
+    tint: '#f8d5e1',
     name: 'Mochi',
     tagline: 'A Windows re-creation of macOS Preview for PDFs and images.',
     description:
@@ -64,6 +70,7 @@ export const projects = [
   },
   {
     slug: 'muszi',
+    tint: '#e2dccb',
     name: 'Muszi',
     tagline: 'A vinyl music player for the web.',
     description:
@@ -74,6 +81,7 @@ export const projects = [
   },
   {
     slug: 'olap-lab',
+    tint: '#c8e8ec',
     name: 'OLAP Lab',
     tagline: 'An interactive laboratory for understanding OLAP cubes.',
     description:
@@ -84,6 +92,7 @@ export const projects = [
   },
   {
     slug: 'wexy',
+    tint: '#fbdcc2',
     name: 'Wexy Lyrics',
     tagline: 'Word-by-word synced lyrics for Windows.',
     description:
