@@ -42,7 +42,18 @@ export default function Layout() {
       <main className="main">
         <Outlet />
       </main>
-      <footer className="footer">© {year} maxlovesher</footer>
+      <footer className="footer">
+        <span>© {year} maxlovesher</span>
+        <span className="footer-links">
+          <Link to="/projects">Projects</Link>
+          <a href="https://github.com/maxlovesher" target="_blank" rel="noreferrer">
+            GitHub ↗
+          </a>
+          <button type="button" onClick={() => scrollToTop({ smooth: true })}>
+            Back to top ↑
+          </button>
+        </span>
+      </footer>
       <Hud />
       <Dock onMenu={() => setMenuOpen(true)} menuRef={menuRef} />
       <Menu open={menuOpen} onClose={closeMenu} />

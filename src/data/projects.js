@@ -9,6 +9,11 @@ const gh = (repo) => ({ label: 'GitHub', href: `https://github.com/maxlovesher/$
 //   stack      technologies used
 //   notes      honest caveats
 //   status     where the project stands
+//   area       filter group on the projects page
+//   figure     a visual for the case study: { type, caption, ... } (see components/Figure.jsx)
+//   cover      an image shown in the hover preview
+
+export const areas = ['AI', 'Web', 'Desktop']
 
 export const projects = [
   {
@@ -16,6 +21,20 @@ export const projects = [
     tint: '#f6e9b0',
     name: 'Canary',
     kind: 'Security tooling',
+    area: 'AI',
+    // Read off Canary's reports/m6_defenses/tradeoff.svg: [value, low, high] in percent, Wilson 95% CI.
+    figure: {
+      type: 'tradeoff',
+      caption: 'Security versus utility. Lower-left is better. Whiskers are Wilson 95% intervals; n = 100 per condition, proxy judge.',
+      x: 'False refusals on benign requests',
+      y: 'Attack success rate',
+      points: [
+        { name: 'No defense', x: [18.4, 12.0, 27.2], y: [6.0, 2.8, 12.5] },
+        { name: 'Hardened prompt', x: [69.0, 59.4, 77.2], y: [1.0, 0.2, 5.4] },
+        { name: 'Input filter', x: [31.3, 23.0, 41.0], y: [1.0, 0.2, 5.4] },
+        { name: 'Output filter', x: [33.3, 24.8, 43.1], y: [5.0, 2.2, 11.2] },
+      ],
+    },
     tagline: 'Config-driven red-teaming harness for LLMs, RAG pipelines and agents.',
     description:
       'Attacks a system, measures attack success, and measures how much each defense reduces attacks versus what it costs in normal usefulness. Built from a YAML config with deterministic runs and metrics implemented in the repo. Measured locally on qwen3:4b: a Llama Guard input filter cut attack success from 6% to 1% while false refusals rose from 18% to 31%.',
@@ -61,6 +80,18 @@ export const projects = [
     tint: '#cfe0f5',
     name: 'RAGBench',
     kind: 'Evaluation harness',
+    area: 'AI',
+    figure: {
+      type: 'compare',
+      caption: 'Retrieval quality at top_k = 3 on 20 documents and 20 labelled queries. Real runs.',
+      series: ['Baseline', 'Semantic hybrid'],
+      rows: [
+        { name: 'Recall@3', values: [1.0, 1.0] },
+        { name: 'Precision@3', values: [0.483, 0.75] },
+        { name: 'MRR', values: [0.975, 1.0] },
+        { name: 'nDCG@3', values: [0.974, 0.98] },
+      ],
+    },
     tagline: 'Benchmarking retrieval-augmented generation pipelines.',
     description:
       'Every component (chunker, embedder, retriever, reranker, LLM provider) is a swappable strategy built from one config. Retrieval is scored with self-implemented Recall@K, Precision@K, MRR and nDCG@K; generation is scored with LLM-as-judge faithfulness and relevance.',
@@ -107,6 +138,7 @@ export const projects = [
     tint: '#c9ecdc',
     name: 'VeloCiTI',
     kind: 'Smart India Hackathon prototype',
+    area: 'AI',
     tagline: 'Vehicle Location and City Traffic Intelligence.',
     description:
       'An AI traffic-management platform for emergency green corridors, adaptive signal control and vehicle intelligence, built as a Smart India Hackathon prototype for Bhubaneswar. Simulates 100 junctions with multi-agent signal control, pre-empts signals ahead of an ambulance, and reads number plates (YOLOv8, OCR) or re-identifies vehicles without plates.',
@@ -157,6 +189,20 @@ export const projects = [
     tint: '#f6d3c8',
     name: 'Tapped In',
     kind: 'Learning product',
+    area: 'Web',
+    figure: {
+      type: 'ladder',
+      caption: 'The rank ladder. The Culture IQ test sets your starting rank; lessons earn Culture Points.',
+      unit: 'CP',
+      steps: [
+        { name: 'NPC', value: 0 },
+        { name: 'Casual', value: 200 },
+        { name: 'Tapped In', value: 450 },
+        { name: 'Plugged', value: 750 },
+        { name: 'Tastemaker', value: 1100 },
+        { name: 'Certified Cultured', value: 1500 },
+      ],
+    },
     tagline: 'A culture course for your friends, from hip-hop to memes to politics.',
     description:
       'A randomized Culture IQ test, roadmaps of how artists got where they are, five-minute lessons with quizzes, a rank ladder from NPC to Certified Cultured, and accounts so progress follows you across devices.',
@@ -200,6 +246,7 @@ export const projects = [
     tint: '#ddd0f7',
     name: 'fiilter',
     kind: 'Creative tool',
+    area: 'Web',
     tagline: 'Grade photos and videos with Lightroom-style templates.',
     description:
       'Build a look once and apply it to everything. Runs entirely in the browser on the GPU with WebGL2, so photos and videos never leave your computer. Supports Lightroom panels, tone curves, color grading, .xmp presets and .cube LUTs.',
@@ -253,6 +300,7 @@ export const projects = [
     tint: '#f8d5e1',
     name: 'Mochi',
     kind: 'Desktop app',
+    area: 'Desktop',
     tagline: 'A Windows re-creation of macOS Preview for PDFs and images.',
     description:
       'One lightweight window per document, with page reordering, merge, split and true redaction. Python and PySide6 on top of PyMuPDF, with ONNX-based background removal for images.',
@@ -289,6 +337,7 @@ export const projects = [
     tint: '#e2dccb',
     name: 'Muszi',
     kind: 'Web audio',
+    area: 'Web',
     tagline: 'A vinyl music player for the web.',
     description:
       'Put a record on and drop the needle anywhere to play from that point. Plays your own files, stored only in your browser, or connects to Spotify. Translucent vinyl marbled from the cover art, a draggable tonearm, surface crackle and a 3D crate.',
@@ -322,6 +371,7 @@ export const projects = [
     tint: '#c8e8ec',
     name: 'OLAP Lab',
     kind: 'Teaching tool',
+    area: 'Web',
     tagline: 'An interactive laboratory for understanding OLAP cubes.',
     description:
       'A client-side app that turns a table into a live cube and makes slice, dice, roll-up, drill-down and pivot into direct-manipulation gestures. Every pixel is derived from a real query result.',
@@ -368,6 +418,13 @@ export const projects = [
     tint: '#fbdcc2',
     name: 'Wexy Lyrics',
     kind: 'Desktop app',
+    area: 'Desktop',
+    cover: '/media/wexy/06.webp',
+    figure: {
+      type: 'flipbook',
+      caption: 'The Ship style: each word lights as it is sung, then drifts away in 3D.',
+      frames: Array.from({ length: 12 }, (_, i) => `/media/wexy/${String(i + 1).padStart(2, '0')}.webp`),
+    },
     tagline: 'Word-by-word synced lyrics for Windows.',
     description:
       'A tray app that reads whatever you are playing and lights each word as it is sung, as a fullscreen idle overlay, a click-through layer or a windowed player.',

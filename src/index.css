@@ -521,12 +521,385 @@ article .tags {
   margin-top: clamp(80px, 16vh, 180px);
 }
 
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (hover: none) {
+  .hint {
+    display: none;
+  }
+}
+
+/* Figures */
+.figure {
+  margin: 0;
+}
+
+.figure figcaption {
+  max-width: 62ch;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.chart {
+  position: relative;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-size: 13px;
+}
+
+.chart .grid line {
+  stroke: var(--line);
+}
+
+.chart .grid text,
+.chart .axis-title {
+  fill: var(--muted);
+  font-size: 12px;
+}
+
+.chart .point {
+  cursor: default;
+  outline: none;
+  transition: opacity 0.2s;
+}
+
+.chart .point.dim {
+  opacity: 0.3;
+}
+
+.chart .whisker {
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.chart .dot {
+  fill: var(--text);
+  stroke: var(--stage);
+  stroke-width: 2;
+}
+
+.chart .point.on .dot,
+.chart .point:focus-visible .dot {
+  r: 8;
+}
+
+.chart .hit {
+  fill: transparent;
+}
+
+.chart .point text {
+  fill: var(--text);
+  font-weight: 500;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  min-width: 220px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+  font-size: 0.85rem;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 18px));
+}
+
+.tooltip b {
+  font-weight: 500;
+}
+
+.tooltip i {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 0;
+  margin: 0 0 20px;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.s0 {
+  background: var(--ghost);
+}
+
+.s1 {
+  background: var(--text);
+}
+
+.compare dl {
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.compare-row {
+  display: grid;
+  grid-template-columns: minmax(96px, 160px) 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.compare dt {
+  font-size: 0.95rem;
+}
+
+.compare dd {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.bar-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar {
+  display: block;
+  height: 10px;
+  border-radius: 0 4px 4px 0;
+}
+
+.bar-track,
+.ladder-track {
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+
+.bar-line .value {
+  width: 44px;
+}
+
+.value {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ladder {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.ladder li {
+  display: grid;
+  grid-template-columns: 40px minmax(110px, 180px) 1fr 80px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.ladder .num {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ladder .bar {
+  background: var(--text);
+}
+
+.ladder .value {
+  text-align: right;
+}
+
+.flipbook {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+.flipbook img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flip-toggle {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  border-color: rgb(255 255 255 / 0.5);
+  color: #fff;
+}
+
+.flip-toggle:hover {
+  background: #fff;
+  color: #111;
+}
+
+/* Projects filter */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: clamp(32px, 6vh, 64px) 0 clamp(32px, 6vh, 64px);
+}
+
+.pill.on {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.pill b {
+  opacity: 0.6;
+}
+
+/* Hover preview that follows the cursor over project rows */
+.preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.preview-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 260px;
+  height: 180px;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 16px;
+  color: #111;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.12);
+  opacity: 0;
+  transform: scale(0.85) rotate(-3deg);
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.preview.show .preview-card {
+  opacity: 1;
+  transform: none;
+}
+
+.preview-card img {
+  width: calc(100% + 36px);
+  height: calc(100% + 36px);
+  margin: -18px;
+  object-fit: cover;
+}
+
+.preview-kind {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.preview-stat {
+  display: grid;
+  gap: 6px;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.preview-stat b {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .preview {
+    display: none;
+  }
+}
+
 /* Footer */
 .footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 24px;
   padding-block: 28px 110px;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.footer-links a,
+.footer-links button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover,
+.footer-links button:hover {
+  color: var(--text);
 }
 
 /* Floating glass dock */
@@ -712,6 +1085,32 @@ article .tags {
 }
 
 @media (max-width: 720px) {
+  /* SVG text scales with the chart, so keep it readable and let it scroll sideways instead */
+  .chart {
+    overflow-x: auto;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+
+  .chart svg {
+    min-width: 600px;
+  }
+
+  .ladder li {
+    grid-template-columns: 28px 1fr auto;
+    gap: 6px 12px;
+  }
+
+  .ladder-track {
+    grid-column: 2 / -1;
+    grid-row: 2;
+  }
+
+  .compare-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
   .card {
     grid-template-columns: 1fr 28px;
     gap: 10px 16px;

@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
-import ProjectCard from '../components/ProjectCard.jsx'
+import ProjectList from '../components/ProjectList.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { projects } from '../data/projects.js'
+import { useTitle } from '../lib/title.js'
 
 const live = projects.filter((p) => p.url).length
 
@@ -35,6 +36,7 @@ const principles = [
 ]
 
 export default function Home() {
+  useTitle(null)
   return (
     <>
       <section className="hero">
@@ -62,11 +64,7 @@ export default function Home() {
       </dl>
       <section>
         <h2 className="label">Featured projects</h2>
-        <div className="list">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.slug} project={p} index={i} />
-          ))}
-        </div>
+        <ProjectList />
       </section>
       <section className="home-block">
         <h2 className="label">How I work</h2>

@@ -1,18 +1,40 @@
-import { Link, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import Figure from '../components/Figure.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { projects } from '../data/projects.js'
 import { setTint } from '../lib/tint.js'
+import { useTitle } from '../lib/title.js'
 import NotFound from './NotFound.jsx'
+
+const at = (i) => projects[(i + projects.length) % projects.length]
 
 // Rendered at /<slug> (project passed as a prop) and /projects/:slug (looked up from the URL).
 export default function Project({ project: given }) {
   const { slug } = useParams()
+  const navigate = useNavigate()
   const index = projects.findIndex((p) => p.slug === (given?.slug ?? slug))
   const project = projects[index]
 
+  useTitle(project?.name ?? 'Not found')
+
+  // ← and → step through the projects, unless a field, a modifier key or the menu is in play.
+  useEffect(() => {
+    if (index < 0) return
+    const onKey = (e) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+      if (e.target.closest?.('input, textarea, select, [contenteditable]')) return
+      if (document.querySelector('.menu.open')) return
+      if (e.key === 'ArrowRight') navigate(`/${at(index + 1).slug}`)
+      if (e.key === 'ArrowLeft') navigate(`/${at(index - 1).slug}`)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [index, navigate])
+
   if (!project) return <NotFound />
 
-  const next = projects[(index + 1) % projects.length]
+  const next = at(index + 1)
   const { stats = [], highlights = [], how = [], stack = [], notes, status } = project
 
   return (
@@ -56,6 +78,13 @@ export default function Project({ project: given }) {
       <section className="about">
         <Reveal as="p" text={project.description} />
       </section>
+
+      {project.figure && (
+        <section>
+          <h2 className="label">In numbers</h2>
+          <Figure figure={project.figure} />
+        </section>
+      )}
 
       {highlights.length > 0 && (
         <section>
@@ -115,6 +144,9 @@ export default function Project({ project: given }) {
         <span className="label">Next project</span>
         <span className="next-name">{next.name} →</span>
       </Link>
+      <p className="hint" aria-hidden="true">
+        Tip: use ← → to browse projects
+      </p>
     </article>
   )
 }

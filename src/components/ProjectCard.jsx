@@ -28,7 +28,7 @@ export default function ProjectCard({ project, index }) {
   )
 
   return (
-    <Link to={`/${project.slug}`} className="card" {...tint}>
+    <Link to={`/${project.slug}`} className="card" data-slug={project.slug} {...tint}>
       {body}
     </Link>
   )
