@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 
-const clock = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+const clock = () =>
+  new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 
 // Small corner readout: visitor's local time, scroll progress and project count.
 export default function Hud() {
@@ -10,9 +11,15 @@ export default function Hud() {
   const [now, setNow] = useState(clock)
   const [pct, setPct] = useState(0)
 
+  // Tick on each whole second so the seconds never skip or stall.
   useEffect(() => {
-    const id = setInterval(() => setNow(clock()), 15000)
-    return () => clearInterval(id)
+    let id = 0
+    const tick = () => {
+      setNow(clock())
+      id = setTimeout(tick, 1000 - (Date.now() % 1000))
+    }
+    tick()
+    return () => clearTimeout(id)
   }, [])
 
   useEffect(() => {

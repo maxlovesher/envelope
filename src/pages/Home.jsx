@@ -1,8 +1,36 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import BigType from '../components/BigType.jsx'
+import Marquee from '../components/Marquee.jsx'
 import ProjectList from '../components/ProjectList.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { projects } from '../data/projects.js'
+import { usePrefs } from '../lib/prefs-context.js'
 import { useTitle } from '../lib/title.js'
+
+const roles = ['AI evaluation', 'Computer vision', 'Music', 'The web']
+
+// The areas I build in, lit one at a time.
+function Roles() {
+  const { motion } = usePrefs()
+  const [on, setOn] = useState(0)
+
+  useEffect(() => {
+    if (!motion) return
+    const id = setInterval(() => setOn((i) => (i + 1) % roles.length), 1600)
+    return () => clearInterval(id)
+  }, [motion])
+
+  return (
+    <ul className="roles" aria-label="What I build">
+      {roles.map((r, i) => (
+        <li key={r} className={!motion || i === on ? 'on' : ''}>
+          {r}
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 const live = projects.filter((p) => p.url).length
 
@@ -39,15 +67,19 @@ export default function Home() {
   useTitle(null)
   return (
     <>
-      <section className="hero">
-        <h1>
-          <em className="serif">Hey, I&apos;m</em> Max.
-        </h1>
-        <p>I build things.</p>
-        <Link to="/projects" className="button">
-          See my work
-        </Link>
+      <section className="hero hero-x">
+        <Roles />
+        <div className="hero-copy">
+          <p>
+            <em className="serif">Hey, I&apos;m</em> Max. I build things.
+          </p>
+          <Link to="/projects" className="button" data-cursor="Work">
+            See my work
+          </Link>
+        </div>
+        <BigType as="h1" lines={['Max']} className="hero-name" />
       </section>
+      <Marquee />
       <section className="statement">
         <Reveal
           as="p"
@@ -63,7 +95,7 @@ export default function Home() {
         ))}
       </dl>
       <section>
-        <h2 className="label">Featured projects</h2>
+        <BigType lines={['Selected', 'work']} />
         <ProjectList />
       </section>
       <section className="home-block">
@@ -88,6 +120,18 @@ export default function Home() {
             </li>
           ))}
         </ul>
+      </section>
+      <section className="cta">
+        <BigType lines={['Next', 'chapter']} filled={[1]} />
+        <p className="lead">More is on the way. Follow along on GitHub, or dig through everything built so far.</p>
+        <p className="actions">
+          <a className="button solid" href="https://github.com/maxlovesher" target="_blank" rel="noreferrer">
+            GitHub ↗
+          </a>
+          <Link to="/projects" className="button">
+            All projects
+          </Link>
+        </p>
       </section>
     </>
   )

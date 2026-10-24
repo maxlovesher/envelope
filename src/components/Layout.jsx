@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import Cursor from './Cursor.jsx'
 import Dock from './Dock.jsx'
 import Hud from './Hud.jsx'
 import Intro from './Intro.jsx'
@@ -57,6 +58,7 @@ export default function Layout() {
       <Hud />
       <Dock onMenu={() => setMenuOpen(true)} menuRef={menuRef} />
       <Menu open={menuOpen} onClose={closeMenu} />
+      <Cursor />
     </>
   )
 }

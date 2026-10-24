@@ -138,6 +138,7 @@ export default function Project({ project: given }) {
       <Link
         to={`/${next.slug}`}
         className="next"
+        data-cursor="Next"
         onMouseEnter={() => setTint(next.tint)}
         onMouseLeave={() => setTint(null)}
       >

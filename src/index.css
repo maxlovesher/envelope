@@ -11,6 +11,8 @@
   --gutter: clamp(20px, 4vw, 56px);
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+  --accent: #f10000;
   color-scheme: light;
 }
 
@@ -23,6 +25,7 @@ html[data-theme='dark'] {
   --ink: #f2f2f2;
   --on-ink: #111;
   --tint-amt: 16%;
+  --accent: #ff2d20;
   color-scheme: dark;
 }
 
@@ -866,6 +869,213 @@ article .tags {
   .preview {
     display: none;
   }
+}
+
+/* Inverting cursor */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.cursor {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: #fff;
+  transition:
+    width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    margin 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.cursor.hover {
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+}
+
+.cursor.labelled {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+}
+
+.cursor span {
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cursor.labelled span {
+  opacity: 1;
+}
+
+.cursor.down {
+  transform: scale(0.8);
+}
+
+.cursor.hidden {
+  opacity: 0;
+}
+
+/* Giant display type that flips in letter by letter */
+.bigtype {
+  margin: 0 0 clamp(40px, 8vh, 96px);
+  font-family: var(--display);
+  font-size: clamp(4rem, 18vw, 19rem);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  perspective: 900px;
+}
+
+.bigtype-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.bigtype .ch {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text);
+  opacity: 0;
+  transform: rotateY(-90deg);
+  transition:
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i) * 40ms),
+    opacity 0.4s ease calc(var(--i) * 40ms);
+}
+
+.bigtype-line.filled .ch {
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+}
+
+.bigtype.in .ch {
+  opacity: 1;
+  transform: none;
+}
+
+/* Home hero: cycling focus areas over a giant name */
+.hero-x {
+  display: grid;
+  gap: clamp(32px, 6vh, 64px);
+  padding-block: clamp(8px, 4vh, 48px) clamp(48px, 10vh, 120px);
+}
+
+.roles {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.roles li {
+  color: var(--ghost);
+  transition: color 0.45s ease;
+}
+
+.roles li.on {
+  color: var(--text);
+}
+
+.hero-copy p {
+  margin: 0;
+}
+
+.hero-copy .button {
+  margin-top: 24px;
+}
+
+.hero .hero-name {
+  margin: 0;
+  /* "MAX" in Anton is about 2em wide, so this keeps it inside the 1400px column */
+  font-size: clamp(5rem, 44vw, 640px);
+  line-height: 0.78;
+}
+
+/* Project-name marquee */
+.marquee {
+  margin: 0 calc(var(--gutter) * -1) clamp(80px, 16vh, 180px);
+  padding-block: clamp(16px, 3vw, 28px);
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee a {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  padding-right: 0.35em;
+  color: transparent;
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 7vw, 6.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  -webkit-text-stroke: 1px var(--text);
+  transition: color 0.3s;
+}
+
+.marquee a:hover {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+}
+
+.marquee .star {
+  color: var(--accent);
+  font-size: 0.4em;
+  -webkit-text-stroke: 0;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Closing call to action */
+.cta {
+  margin-top: clamp(100px, 20vh, 220px);
+}
+
+.cta .bigtype {
+  margin-bottom: 24px;
+}
+
+.cta .lead {
+  margin-top: 0;
 }
 
 /* Footer */
