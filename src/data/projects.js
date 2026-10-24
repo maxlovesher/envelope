@@ -30,6 +30,7 @@ export const projects = [
     description:
       'An AI traffic-management platform for emergency green corridors, adaptive signal control and vehicle intelligence, built as a Smart India Hackathon prototype for Bhubaneswar. Simulates 100 junctions with multi-agent signal control, pre-empts signals ahead of an ambulance, and reads number plates (YOLOv8, OCR) or re-identifies vehicles without plates.',
     tags: ['Computer vision', 'Traffic', 'React', 'Flask'],
+    url: 'https://velociti-8pfl.onrender.com',
     links: [gh('VeloCiTI')],
   },
   {
@@ -49,7 +50,7 @@ export const projects = [
     description:
       'Build a look once and apply it to everything. Runs entirely in the browser on the GPU with WebGL2, so photos and videos never leave your computer. Supports Lightroom panels, tone curves, color grading, .xmp presets and .cube LUTs.',
     tags: ['WebGL2', 'TypeScript', 'Vite'],
-    url: 'https://filter-delta-woad.vercel.app',
+    url: 'https://filter-delta-woad.vercel.app/',
     links: [gh('filter')],
   },
   {
@@ -78,6 +79,7 @@ export const projects = [
     description:
       'A client-side app that turns a table into a live cube and makes slice, dice, roll-up, drill-down and pivot into direct-manipulation gestures. Every pixel is derived from a real query result.',
     tags: ['TypeScript', 'OLAP', 'Vite'],
+    url: 'https://olapv.onrender.com',
     links: [gh('OLapV')],
   },
   {
