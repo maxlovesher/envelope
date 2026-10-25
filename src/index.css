@@ -12,8 +12,7 @@
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
   --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  /* The blue of the sleeping-cat print */
-  --accent: #355078;
+  --accent: #f10000;
   --on-accent: #fff;
   color-scheme: light;
 }
@@ -27,8 +26,7 @@ html[data-theme='dark'] {
   --ink: #f2f2f2;
   --on-ink: #111;
   --tint-amt: 16%;
-  /* Same hue, lifted so it reads on the dark background */
-  --accent: #7f9ccc;
+  --accent: #ff2d20;
   --on-accent: #0f0f10;
   color-scheme: dark;
 }
@@ -1064,7 +1062,7 @@ html .button.solid:hover {
   }
 }
 
-/* Accent: the cat's blue on the main interactive surfaces */
+/* Accent red on the main interactive surfaces */
 html .brand,
 html .dock a.active,
 html .button.solid,
@@ -1106,111 +1104,28 @@ html .pill.on {
   margin-bottom: calc(-1 * clamp(10px, 2.5vw, 36px));
 }
 
-/* Glitch: two colour-shifted copies slice across the image while hovered */
-.glitch {
+/* Grid distortion: the canvas draws the image; the img underneath only sets the size */
+.distort {
   position: relative;
   display: block;
-  outline: none;
 }
 
-.glitch img {
+.distort img {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.glitch-layer {
+.distort canvas {
   position: absolute;
   inset: 0;
-  background: var(--src) center / 100% 100% no-repeat;
-  opacity: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
-.glitch:hover img,
-.glitch:focus-visible img {
-  animation: glitch-jitter 0.4s steps(2, end) infinite;
-}
-
-.glitch:hover .glitch-layer,
-.glitch:focus-visible .glitch-layer {
-  opacity: 0.85;
-}
-
-.glitch:hover .glitch-layer:nth-of-type(1),
-.glitch:focus-visible .glitch-layer:nth-of-type(1) {
-  filter: hue-rotate(150deg) saturate(3);
-  animation: glitch-a 0.7s steps(3, end) infinite;
-}
-
-.glitch:hover .glitch-layer:nth-of-type(2),
-.glitch:focus-visible .glitch-layer:nth-of-type(2) {
-  filter: hue-rotate(-100deg) saturate(4);
-  animation: glitch-b 0.55s steps(3, end) infinite;
-}
-
-@keyframes glitch-a {
-  0% {
-    clip-path: inset(10% 0 72% 0);
-    transform: translate(-12px, 0);
-  }
-  25% {
-    clip-path: inset(58% 0 18% 0);
-    transform: translate(9px, 2px);
-  }
-  50% {
-    clip-path: inset(34% 0 48% 0);
-    transform: translate(-7px, -2px);
-  }
-  75% {
-    clip-path: inset(80% 0 6% 0);
-    transform: translate(14px, 0);
-  }
-  100% {
-    clip-path: inset(0 0 86% 0);
-    transform: translate(-5px, 1px);
-  }
-}
-
-@keyframes glitch-b {
-  0% {
-    clip-path: inset(70% 0 12% 0);
-    transform: translate(10px, -1px);
-  }
-  33% {
-    clip-path: inset(22% 0 62% 0);
-    transform: translate(-13px, 1px);
-  }
-  66% {
-    clip-path: inset(46% 0 38% 0);
-    transform: translate(6px, 0);
-  }
-  100% {
-    clip-path: inset(88% 0 2% 0);
-    transform: translate(-9px, 2px);
-  }
-}
-
-@keyframes glitch-jitter {
-  0% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(2px, -1px);
-  }
-  100% {
-    transform: translate(-2px, 1px);
-  }
-}
-
-html[data-motion='off'] .glitch-layer {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .glitch-layer {
-    display: none;
-  }
+.distort.ready img {
+  opacity: 0;
 }
 
 /* Selected work: Spider-Man swings beside the heading, which stretches taller on scroll */

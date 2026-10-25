@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import BigType from '../components/BigType.jsx'
-import Glitch from '../components/Glitch.jsx'
+import Distort from '../components/Distort.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ProjectList from '../components/ProjectList.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -81,7 +81,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <Glitch src="/media/cat.webp" alt="A tabby cat asleep, printed in blue and cream" className="hero-cat" />
+          <Distort src="/media/cat.webp" alt="A tabby cat asleep, printed in blue and cream" className="hero-cat" />
         </div>
         <BigType as="h1" lines={['Max']} className="hero-name" />
       </section>
