@@ -103,17 +103,15 @@ html.lenis body {
 }
 
 .brand {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--on-ink);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  display: block;
+  width: clamp(140px, 18vw, 260px);
   transition: transform 0.25s ease;
+}
+
+.brand img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .brand:hover {
@@ -1063,7 +1061,6 @@ html .button.solid:hover {
 }
 
 /* Accent red on the main interactive surfaces */
-html .brand,
 html .dock a.active,
 html .button.solid,
 html .pill.on {

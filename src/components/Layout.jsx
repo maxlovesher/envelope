@@ -37,7 +37,7 @@ export default function Layout() {
       <Intro />
       <header className="header">
         <Link to="/" className="brand" aria-label="maxlovesher home">
-          M
+          <img src="/media/brand.webp" alt="" />
         </Link>
       </header>
       <main className="main">
