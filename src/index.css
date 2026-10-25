@@ -12,7 +12,9 @@
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
   --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  --accent: #f10000;
+  /* The blue of the sleeping-cat print */
+  --accent: #355078;
+  --on-accent: #fff;
   color-scheme: light;
 }
 
@@ -25,7 +27,9 @@ html[data-theme='dark'] {
   --ink: #f2f2f2;
   --on-ink: #111;
   --tint-amt: 16%;
-  --accent: #ff2d20;
+  /* Same hue, lifted so it reads on the dark background */
+  --accent: #7f9ccc;
+  --on-accent: #0f0f10;
   color-scheme: dark;
 }
 
@@ -368,7 +372,7 @@ article .tags {
   color: var(--on-ink);
 }
 
-.button.solid:hover {
+html .button.solid:hover {
   background: transparent;
   color: var(--text);
 }
@@ -871,12 +875,7 @@ article .tags {
   }
 }
 
-/* Inverting cursor */
-html.has-cursor,
-html.has-cursor * {
-  cursor: none !important;
-}
-
+/* Inverting circle that trails the normal cursor */
 .cursor-wrap {
   position: fixed;
   top: 0;
@@ -890,9 +889,9 @@ html.has-cursor * {
 .cursor {
   display: grid;
   place-items: center;
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
   border-radius: 50%;
   background: #fff;
   transition:
@@ -904,15 +903,15 @@ html.has-cursor * {
 }
 
 .cursor.hover {
-  width: 56px;
-  height: 56px;
-  margin: -28px 0 0 -28px;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
 }
 
 .cursor.labelled {
-  width: 92px;
-  height: 92px;
-  margin: -46px 0 0 -46px;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
 }
 
 .cursor span {
@@ -1065,9 +1064,254 @@ html.has-cursor * {
   }
 }
 
-/* Closing call to action */
+/* Accent: the cat's blue on the main interactive surfaces */
+html .brand,
+html .dock a.active,
+html .button.solid,
+html .pill.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Hero: intro on the left, the cat dozing on top of the name on the right */
+.hero-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: end;
+  gap: clamp(24px, 4vw, 64px);
+}
+
+.hero-intro {
+  display: grid;
+  gap: clamp(32px, 6vh, 64px);
+}
+
+.hero-cat {
+  position: relative;
+  z-index: 1;
+  justify-self: end;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: calc(-1 * clamp(10px, 2.5vw, 36px));
+}
+
+/* Glitch: two colour-shifted copies slice across the image while hovered */
+.glitch {
+  position: relative;
+  display: block;
+  outline: none;
+}
+
+.glitch img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.glitch-layer {
+  position: absolute;
+  inset: 0;
+  background: var(--src) center / 100% 100% no-repeat;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch:hover img,
+.glitch:focus-visible img {
+  animation: glitch-jitter 0.4s steps(2, end) infinite;
+}
+
+.glitch:hover .glitch-layer,
+.glitch:focus-visible .glitch-layer {
+  opacity: 0.85;
+}
+
+.glitch:hover .glitch-layer:nth-of-type(1),
+.glitch:focus-visible .glitch-layer:nth-of-type(1) {
+  filter: hue-rotate(150deg) saturate(3);
+  animation: glitch-a 0.7s steps(3, end) infinite;
+}
+
+.glitch:hover .glitch-layer:nth-of-type(2),
+.glitch:focus-visible .glitch-layer:nth-of-type(2) {
+  filter: hue-rotate(-100deg) saturate(4);
+  animation: glitch-b 0.55s steps(3, end) infinite;
+}
+
+@keyframes glitch-a {
+  0% {
+    clip-path: inset(10% 0 72% 0);
+    transform: translate(-12px, 0);
+  }
+  25% {
+    clip-path: inset(58% 0 18% 0);
+    transform: translate(9px, 2px);
+  }
+  50% {
+    clip-path: inset(34% 0 48% 0);
+    transform: translate(-7px, -2px);
+  }
+  75% {
+    clip-path: inset(80% 0 6% 0);
+    transform: translate(14px, 0);
+  }
+  100% {
+    clip-path: inset(0 0 86% 0);
+    transform: translate(-5px, 1px);
+  }
+}
+
+@keyframes glitch-b {
+  0% {
+    clip-path: inset(70% 0 12% 0);
+    transform: translate(10px, -1px);
+  }
+  33% {
+    clip-path: inset(22% 0 62% 0);
+    transform: translate(-13px, 1px);
+  }
+  66% {
+    clip-path: inset(46% 0 38% 0);
+    transform: translate(6px, 0);
+  }
+  100% {
+    clip-path: inset(88% 0 2% 0);
+    transform: translate(-9px, 2px);
+  }
+}
+
+@keyframes glitch-jitter {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2px, -1px);
+  }
+  100% {
+    transform: translate(-2px, 1px);
+  }
+}
+
+html[data-motion='off'] .glitch-layer {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-layer {
+    display: none;
+  }
+}
+
+/* Selected work: Spider-Man swings beside the heading, which stretches taller on scroll */
+.work {
+  position: relative;
+}
+
+.spidey {
+  position: absolute;
+  top: calc(-1 * clamp(40px, 8vh, 110px));
+  right: clamp(0px, 4vw, 64px);
+  z-index: 1;
+  width: clamp(72px, 11vw, 170px);
+  height: auto;
+  image-rendering: pixelated;
+  transform-origin: 50% 0;
+  animation: swing 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+}
+
+.bigtype.stretch .bigtype-line {
+  margin-bottom: calc((var(--s, 1) - 1) * 0.86em);
+  transform: scaleY(var(--s, 1));
+  transform-origin: 0 0;
+}
+
+/* Closing call to action, with the galaxy poster drifting beside it over faint stars */
 .cta {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(32px, 6vw, 96px);
   margin-top: clamp(100px, 20vh, 220px);
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: -12% -4%;
+  z-index: -1;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 18%, var(--text) 50%, transparent 52%),
+    radial-gradient(1px 1px at 22% 72%, var(--text) 50%, transparent 52%),
+    radial-gradient(2px 2px at 37% 34%, var(--accent) 50%, transparent 52%),
+    radial-gradient(1px 1px at 48% 88%, var(--text) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 61% 12%, var(--text) 50%, transparent 52%),
+    radial-gradient(1px 1px at 70% 58%, var(--text) 50%, transparent 52%),
+    radial-gradient(2px 2px at 83% 26%, var(--accent) 50%, transparent 52%),
+    radial-gradient(1px 1px at 91% 80%, var(--text) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 96% 44%, var(--text) 50%, transparent 52%);
+  opacity: 0.35;
+  animation: twinkle 3.5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  to {
+    opacity: 0.12;
+  }
+}
+
+.poster {
+  width: clamp(160px, 18vw, 238px);
+  margin: 0;
+  animation: drift 7s ease-in-out infinite;
+}
+
+.poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 24px 50px rgb(0 0 0 / 0.25);
+  transform: rotate(5deg);
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.poster:hover img {
+  transform: rotate(0deg) scale(1.08);
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
 }
 
 .cta .bigtype {
@@ -1295,6 +1539,25 @@ html.has-cursor * {
 }
 
 @media (max-width: 720px) {
+  .hero-top,
+  .cta {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-cat {
+    justify-self: center;
+    max-width: 440px;
+  }
+
+  .spidey {
+    top: -28px;
+    right: 0;
+  }
+
+  .poster {
+    width: 180px;
+  }
+
   /* SVG text scales with the chart, so keep it readable and let it scroll sideways instead */
   .chart {
     overflow-x: auto;

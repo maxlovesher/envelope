@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import BigType from '../components/BigType.jsx'
+import Glitch from '../components/Glitch.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ProjectList from '../components/ProjectList.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -68,14 +69,19 @@ export default function Home() {
   return (
     <>
       <section className="hero hero-x">
-        <Roles />
-        <div className="hero-copy">
-          <p>
-            <em className="serif">Hey, I&apos;m</em> Max. I build things.
-          </p>
-          <Link to="/projects" className="button" data-cursor="Work">
-            See my work
-          </Link>
+        <div className="hero-top">
+          <div className="hero-intro">
+            <Roles />
+            <div className="hero-copy">
+              <p>
+                <em className="serif">Hey, I&apos;m</em> Max. I build things.
+              </p>
+              <Link to="/projects" className="button" data-cursor="Work">
+                See my work
+              </Link>
+            </div>
+          </div>
+          <Glitch src="/media/cat.webp" alt="A tabby cat asleep, printed in blue and cream" className="hero-cat" />
         </div>
         <BigType as="h1" lines={['Max']} className="hero-name" />
       </section>
@@ -94,8 +100,9 @@ export default function Home() {
           </div>
         ))}
       </dl>
-      <section>
-        <BigType lines={['Selected', 'work']} />
+      <section className="work">
+        <img className="spidey" src="/media/spidey.png" alt="" aria-hidden="true" />
+        <BigType lines={['Selected', 'work']} stretch={1.9} />
         <ProjectList />
       </section>
       <section className="home-block">
@@ -122,16 +129,21 @@ export default function Home() {
         </ul>
       </section>
       <section className="cta">
-        <BigType lines={['Next', 'chapter']} filled={[1]} />
-        <p className="lead">More is on the way. Follow along on GitHub, or dig through everything built so far.</p>
-        <p className="actions">
-          <a className="button solid" href="https://github.com/maxlovesher" target="_blank" rel="noreferrer">
-            GitHub ↗
-          </a>
-          <Link to="/projects" className="button">
-            All projects
-          </Link>
-        </p>
+        <div className="cta-copy">
+          <BigType lines={['Next', 'chapter']} filled={[1]} />
+          <p className="lead">More is on the way. Follow along on GitHub, or dig through everything built so far.</p>
+          <p className="actions">
+            <a className="button solid" href="https://github.com/maxlovesher" target="_blank" rel="noreferrer">
+              GitHub ↗
+            </a>
+            <Link to="/projects" className="button">
+              All projects
+            </Link>
+          </p>
+        </div>
+        <figure className="poster">
+          <img src="/media/galaxy.webp" alt="Poster of a spiral galaxy that reads: Thanks for the mystery." />
+        </figure>
       </section>
     </>
   )

@@ -3,7 +3,7 @@ import { usePrefs } from '../lib/prefs-context.js'
 
 const INTERACTIVE = 'a, button, [data-cursor], [tabindex]:not([tabindex="-1"])'
 
-// A circle that inverts whatever is under it (mix-blend-mode: difference) and trails the pointer.
+// A circle that inverts whatever is under it (mix-blend-mode: difference) and trails the normal pointer.
 // It grows over links and buttons and shows the nearest data-cursor label. Fine pointers only.
 export default function Cursor() {
   const { motion } = usePrefs()
@@ -14,8 +14,6 @@ export default function Cursor() {
   useEffect(() => {
     if (!enabled) return
     const el = ref.current
-    const root = document.documentElement
-    root.classList.add('has-cursor')
 
     const target = { x: -100, y: -100 }
     const pos = { x: -100, y: -100 }
@@ -49,7 +47,6 @@ export default function Cursor() {
     window.addEventListener('pointerup', onUp)
     return () => {
       cancelAnimationFrame(frame)
-      root.classList.remove('has-cursor')
       window.removeEventListener('pointermove', onMove)
       document.removeEventListener('pointerleave', onLeave)
       window.removeEventListener('pointerdown', onDown)
