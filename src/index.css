@@ -114,6 +114,21 @@ html.lenis body {
   height: auto;
 }
 
+/* On the home page the image grows to fill the band above the hero, which drops its top padding
+   so the intro stays where it was */
+.header-home {
+  align-items: flex-start;
+  padding-bottom: 0;
+}
+
+.header-home .brand {
+  width: clamp(220px, 39vw, 600px);
+}
+
+.main:has(> .hero-x) {
+  padding-top: 0;
+}
+
 /* Light/dark switch: a pill with a knob that slides between moon (dark) and sun (light) */
 .theme-switch {
   position: relative;
@@ -1009,7 +1024,7 @@ html .button.solid:hover {
 .hero-x {
   display: grid;
   gap: clamp(32px, 6vh, 64px);
-  padding-block: clamp(8px, 4vh, 48px) clamp(48px, 10vh, 120px);
+  padding-block: 0 clamp(48px, 10vh, 120px);
 }
 
 .roles {

@@ -65,7 +65,7 @@ export default function Layout() {
     <>
       <SmoothScroll />
       <Intro />
-      <header className="header">
+      <header className={`header${pathname === '/' ? ' header-home' : ''}`}>
         <Link to="/" className="brand" aria-label="maxlovesher home">
           <img src="/media/brand.webp" alt="" />
         </Link>
