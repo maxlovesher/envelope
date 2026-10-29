@@ -526,6 +526,11 @@ html .button.solid:hover {
   font-variant-numeric: tabular-nums;
 }
 
+.tags .team-tag {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .tags.flat {
   justify-content: flex-start;
   max-width: none;

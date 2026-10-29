@@ -102,7 +102,7 @@ export default function Home() {
       </dl>
       <section className="work">
         <img className="spidey" src="/media/spidey.png" alt="" aria-hidden="true" />
-        <BigType lines={['Selected', 'work']} stretch={1.9} />
+        <BigType lines={['Stuff', 'I built']} stretch={1.9} />
         <ProjectList />
       </section>
       <section className="home-block">

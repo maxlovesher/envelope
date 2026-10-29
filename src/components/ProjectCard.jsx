@@ -17,6 +17,7 @@ export default function ProjectCard({ project, index }) {
         <p>{project.tagline}</p>
       </div>
       <ul className="tags">
+        {project.team && <li className="team-tag">Team project</li>}
         {project.tags.map((t) => (
           <li key={t}>{t}</li>
         ))}

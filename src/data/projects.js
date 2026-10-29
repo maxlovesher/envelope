@@ -12,6 +12,7 @@ const gh = (repo) => ({ label: 'GitHub', href: `https://github.com/maxlovesher/$
 //   area       filter group on the projects page
 //   figure     a visual for the case study: { type, caption, ... } (see components/Figure.jsx)
 //   cover      an image shown in the hover preview
+//   team       for team projects: { size, context, role? } (role is my part, when it's documented)
 
 export const areas = ['AI', 'Web', 'Desktop']
 
@@ -458,5 +459,101 @@ export const projects = [
     notes:
       'Windows does not let third-party apps draw on the real lock screen, so the overlay works like a screensaver. Songs without synced lyrics show the title and artist only.',
     links: [],
+  },
+  {
+    slug: 'glucotwin',
+    tint: '#f6cfcf',
+    name: 'GlucoTwin',
+    kind: 'Healthcare AI',
+    area: 'AI',
+    team: { size: 3, context: 'Digital Twin Challenge 2026, Happiest Health' },
+    tagline: 'A digital twin that warns of glucose spikes and lows in Type 2 Diabetes.',
+    description:
+      'Keeps a personalised physiological twin of each person with Type 2 Diabetes in sync with their health record and live wearables. It warns of a glucose spike up to about an hour before it happens and of dangerous lows, explains why, and lets a doctor and patient test what-if changes on the patient’s own simulated body.',
+    tags: ['Digital twin', 'ML', 'Streamlit'],
+    url: 'https://glucotwin-kiit.streamlit.app/',
+    stats: [
+      { value: '0.888', label: 'Spike-prediction AUROC on 96 real patients' },
+      { value: '0.901', label: 'Low-glucose AUROC on real patients' },
+      { value: '75 min', label: 'Median warning before a spike (synthetic cohort)' },
+      { value: '13.5 vs 25.5', label: '30-min forecast error in mg/dL, ours vs no change' },
+    ],
+    highlights: [
+      {
+        title: 'A real twin, not just a classifier',
+        text: 'Each patient gets a personalised glucose–insulin model that starts from the health record, is calibrated on their first week and stays in sync with every CGM reading. That is what makes what-if simulation possible.',
+      },
+      {
+        title: 'Checked on real patients',
+        text: 'Validated on 96 people with Type 2 Diabetes from the open ShanghaiT2DM dataset, with person-grouped cross-validation and bootstrap intervals. A model trained only on synthetic data still reached 0.842 AUROC on them.',
+      },
+      {
+        title: 'Both directions of danger',
+        text: 'Predicts spikes above 180 mg/dL and lows below 70 mg/dL, with alerts scored like phone notifications: spikes caught, warning time and false alarms per day.',
+      },
+      {
+        title: 'Built for India',
+        text: 'Indian meal presets such as rice and sambar, ragi mudde, dosa and biryani, a Hindi and English patient screen, and FHIR R4 export for ABDM.',
+      },
+      {
+        title: 'Honest about what failed',
+        text: 'The write-up reports what did not work: twin features add no accuracy, static health-record data slightly hurt on real data, and the physics-only twin forecasts worse than no change on real patients.',
+      },
+    ],
+    how: [
+      'A mechanistic twin (an extended Bergman minimal model) is personalised from the health record and the first week of data, then updated every 5 minutes from the CGM.',
+      'About 100 strictly causal features fuse glucose trend, routine, meals, activity, heart rate and HRV, sleep and the twin’s own state.',
+      'Gradient-boosted models predict the chance of a spike in the next 2 hours and forecast glucose at 30, 60 and 120 minutes, with plain-language drivers.',
+      'A real-time API registers a patient, streams readings, calibrates the twin and exports to FHIR.',
+    ],
+    stack: ['Python', 'NumPy', 'SciPy', 'Numba', 'scikit-learn', 'FastAPI', 'Streamlit', 'Plotly', 'Docker'],
+    notes:
+      'The headline cohort is synthetic: 120 simulated Indian patients over 28 days. Real-patient results come from the open ShanghaiT2DM dataset (CC BY 4.0). The free demo may need a minute to wake up.',
+    links: [gh('twin_KIIT')],
+  },
+  {
+    slug: 'storesense',
+    tint: '#d9ebc4',
+    name: 'StoreSense',
+    kind: 'Data warehouse',
+    area: 'AI',
+    team: { size: 6, context: 'Data Mining & Data Warehousing course, KIIT', role: 'the data and ETL lead' },
+    tagline: 'A retail data warehouse and market-basket analysis of Instacart orders.',
+    description:
+      'Builds a star-schema data warehouse from the Instacart grocery dataset and mines it to find which products are bought together, what kinds of customers exist, and when and what people buy. The results are shown in a Streamlit dashboard.',
+    tags: ['Data mining', 'DuckDB', 'Streamlit'],
+    url: 'https://storesense.streamlit.app/',
+    stats: [
+      { value: '~700 MB', label: 'Instacart order data' },
+      { value: '2', label: 'Rule miners compared: Apriori and FP-Growth' },
+      { value: '3', label: 'Analyses: basket rules, segments, OLAP' },
+    ],
+    highlights: [
+      {
+        title: 'A proper warehouse',
+        text: 'An ETL pipeline extracts, transforms, loads and validates six raw CSVs into a DuckDB star schema, with tests for row counts and key integrity.',
+      },
+      {
+        title: 'What sells together',
+        text: 'Association rules mined with both Apriori and FP-Growth, with a benchmark comparing the two.',
+      },
+      {
+        title: 'Who the customers are',
+        text: 'K-Means segmentation on RFM features. The dataset has no prices, so basket size stands in for the monetary part.',
+      },
+      {
+        title: 'When people shop',
+        text: 'OLAP queries with ROLLUP and CUBE over day of week, hour and department.',
+      },
+    ],
+    how: [
+      'Extract, transform and load the raw CSVs into a DuckDB star schema, then validate it.',
+      'Run OLAP queries, association-rule mining and customer segmentation on the warehouse.',
+      'Save the results and show them in a Streamlit dashboard.',
+    ],
+    stack: ['Python', 'DuckDB', 'SQL', 'Apriori', 'FP-Growth', 'K-Means', 'Streamlit', 'pytest'],
+    notes:
+      'The dataset has no prices and no calendar dates: only day of week, hour and days since the previous order, capped at 30.',
+    links: [gh('StoreSense')],
   },
 ]

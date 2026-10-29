@@ -45,6 +45,7 @@ export default function Project({ project: given }) {
       <p className="kicker">
         {String(index + 1).padStart(2, '0')}
         {project.kind && <span> · {project.kind}</span>}
+        {project.team && <span> · Team project</span>}
       </p>
       <h1 className="page-title">{project.name}</h1>
       <p className="lead">{project.tagline}</p>
@@ -123,9 +124,15 @@ export default function Project({ project: given }) {
         </section>
       )}
 
-      {(notes || status) && (
+      {(notes || status || project.team) && (
         <section className="notes">
           <h2 className="label">Good to know</h2>
+          {project.team && (
+            <p>
+              <b>Team.</b> Built by a team of {project.team.size} for the {project.team.context}
+              {project.team.role ? `; I was ${project.team.role}.` : '.'}
+            </p>
+          )}
           {status && (
             <p>
               <b>Status.</b> {status}
