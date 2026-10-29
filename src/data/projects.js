@@ -207,7 +207,7 @@ export const projects = [
     description:
       'A randomized Culture IQ test, roadmaps of how artists got where they are, five-minute lessons with quizzes, a rank ladder from NPC to Certified Cultured, and accounts so progress follows you across devices.',
     tags: ['Next.js', 'TypeScript', 'Drizzle'],
-    url: 'https://tapped-in-tau.vercel.app',
+    url: 'https://tappedin.maxlovesher.com/',
     stats: [
       { value: '126', label: 'Test questions' },
       { value: '35', label: 'Lessons across 7 live tracks' },
@@ -251,7 +251,7 @@ export const projects = [
     description:
       'Build a look once and apply it to everything. Runs entirely in the browser on the GPU with WebGL2, so photos and videos never leave your computer. Supports Lightroom panels, tone curves, color grading, .xmp presets and .cube LUTs.',
     tags: ['WebGL2', 'TypeScript', 'Vite'],
-    url: 'https://filter-delta-woad.vercel.app/',
+    url: 'https://fiilter.maxlovesher.com/',
     stats: [
       { value: '8 × 3', label: 'Colour mixer: 8 colours by hue, saturation, luminance' },
       { value: '0–200%', label: 'Template strength' },
