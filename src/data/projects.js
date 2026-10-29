@@ -143,7 +143,7 @@ export const projects = [
     description:
       'An AI traffic-management platform for emergency green corridors, adaptive signal control and vehicle intelligence, built as a Smart India Hackathon prototype for Bhubaneswar. Simulates 100 junctions with multi-agent signal control, pre-empts signals ahead of an ambulance, and reads number plates (YOLOv8, OCR) or re-identifies vehicles without plates.',
     tags: ['Computer vision', 'Traffic', 'React', 'Flask'],
-    url: 'https://velociti-8pfl.onrender.com',
+    url: 'https://velociti.maxlovesher.com/',
     stats: [
       { value: '100', label: 'Junctions simulated' },
       { value: '24', label: 'Frames analysed per second of webcam video' },
@@ -376,7 +376,7 @@ export const projects = [
     description:
       'A client-side app that turns a table into a live cube and makes slice, dice, roll-up, drill-down and pivot into direct-manipulation gestures. Every pixel is derived from a real query result.',
     tags: ['TypeScript', 'OLAP', 'Vite'],
-    url: 'https://olapv.onrender.com',
+    url: 'https://olap.maxlovesher.com/',
     stats: [
       { value: '7', label: 'Operations: slice, dice, roll-up, drill-down, pivot, filter, aggregate' },
       { value: '2', label: 'Built-in datasets: sales and university' },
