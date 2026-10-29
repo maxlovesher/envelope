@@ -96,7 +96,7 @@ export const projects = [
     description:
       'Every component (chunker, embedder, retriever, reranker, LLM provider) is a swappable strategy built from one config. Retrieval is scored with self-implemented Recall@K, Precision@K, MRR and nDCG@K; generation is scored with LLM-as-judge faithfulness and relevance.',
     tags: ['RAG', 'Evaluation', 'Python'],
-    url: 'https://ragbench-wine.vercel.app/',
+    url: 'https://ragbench.maxlovesher.com/',
     stats: [
       { value: '0.483 → 0.750', label: 'Precision@3, baseline to semantic hybrid' },
       { value: '0.975 → 1.000', label: 'MRR, baseline to semantic hybrid' },
