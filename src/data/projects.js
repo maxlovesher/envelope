@@ -186,9 +186,9 @@ export const projects = [
     links: [gh('VeloCiTI')],
   },
   {
-    slug: 'tapped-in',
+    slug: 'fade',
     tint: '#f6d3c8',
-    name: 'Tapped In',
+    name: 'Fade',
     kind: 'Learning product',
     area: 'Web',
     figure: {
@@ -208,7 +208,7 @@ export const projects = [
     description:
       'A randomized Culture IQ test, roadmaps of how artists got where they are, five-minute lessons with quizzes, a rank ladder from NPC to Certified Cultured, and accounts so progress follows you across devices.',
     tags: ['Next.js', 'TypeScript', 'Drizzle'],
-    url: 'https://tappedin.maxlovesher.com/',
+    url: 'https://fade.maxlovesher.com/',
     stats: [
       { value: '126', label: 'Test questions' },
       { value: '35', label: 'Lessons across 7 live tracks' },

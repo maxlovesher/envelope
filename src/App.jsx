@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import Home from './pages/Home.jsx'
 import Project from './pages/Project.jsx'
@@ -17,6 +17,9 @@ export default function App() {
           <Route key={p.slug} path={p.slug} element={<Project project={p} />} />
         ))}
         <Route path="projects/:slug" element={<Project />} />
+        {/* Tapped In was renamed Fade; keep old links working */}
+        <Route path="tapped-in" element={<Navigate to="/fade" replace />} />
+        <Route path="projects/tapped-in" element={<Navigate to="/fade" replace />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
