@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import BigType from '../components/BigType.jsx'
 import Distort from '../components/Distort.jsx'
+import Leaf from '../components/Leaf.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ProjectList from '../components/ProjectList.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -71,6 +72,9 @@ export default function Home() {
     <>
       <section className="hero2">
         <div className="hero-stage">
+          <Leaf className="leaf-h1" tone="deep" style={{ '--r': '-28deg' }} />
+          <Leaf className="leaf-h2" shape="round" tone="fresh" style={{ '--r': '22deg' }} />
+          <Leaf className="leaf-h3" tone="pale" style={{ '--r': '64deg' }} />
           <Distort src="/media/cat.webp" alt="A tabby cat asleep, printed in blue and cream" className="hero-cat" />
           <BigType as="h1" lines={['Max']} className="hero-name" />
         </div>
@@ -129,10 +133,14 @@ export default function Home() {
       </section>
       <section className="work">
         <img className="spidey" src="/media/spidey.png" alt="" aria-hidden="true" />
+        <Leaf className="leaf-w1" shape="round" tone="fresh" style={{ '--r': '-18deg' }} />
+        <Leaf className="leaf-w2" tone="pale" style={{ '--r': '40deg' }} />
         <BigType lines={['Stuff', 'I built']} stretch={1.9} />
         <ProjectList />
       </section>
       <section className="cta">
+        <Leaf className="leaf-c1" shape="round" tone="deep" style={{ '--r': '210deg' }} />
+        <Leaf className="leaf-c2" tone="fresh" style={{ '--r': '35deg' }} />
         <div className="cta-copy">
           <BigType lines={['Next', 'chapter']} filled={[1]} />
           <p className="lead">More is on the way. Follow along on GitHub, or dig through everything built so far.</p>

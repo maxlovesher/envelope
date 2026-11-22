@@ -1095,6 +1095,87 @@ html .button.solid:hover {
   margin-top: 0;
 }
 
+/* Decorative leaves in the open spaces; each sways from its stem around its own angle --r */
+.leaf {
+  position: absolute;
+  z-index: 0;
+  height: auto;
+  pointer-events: none;
+  transform: rotate(var(--r, 0deg));
+  transform-origin: 50% 100%;
+  animation: sway 6s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgb(11 110 61 / 0.15));
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: rotate(calc(var(--r, 0deg) + 7deg));
+  }
+}
+
+.hero-stage {
+  position: relative;
+}
+
+/* Hero: the open space left of the cat, above the M */
+.leaf-h1 {
+  top: 0;
+  left: 4%;
+  width: clamp(38px, 4.6vw, 66px);
+}
+
+.leaf-h2 {
+  top: clamp(24px, 3vw, 44px);
+  left: 18%;
+  width: clamp(30px, 3.4vw, 50px);
+  animation-delay: -2s;
+}
+
+.leaf-h3 {
+  top: 4px;
+  left: 33%;
+  width: clamp(24px, 2.6vw, 38px);
+  animation-delay: -4s;
+}
+
+/* Projects: the gap between the heading and Spider-Man */
+.leaf-w1 {
+  top: clamp(40px, 7vw, 110px);
+  left: 63%;
+  width: clamp(50px, 6vw, 90px);
+  animation-delay: -1s;
+}
+
+.leaf-w2 {
+  top: clamp(130px, 16vw, 250px);
+  left: 70%;
+  width: clamp(34px, 3.8vw, 56px);
+  animation-delay: -3.5s;
+}
+
+/* Next chapter: tucked into two corners of the panel, behind the text */
+.cta .leaf {
+  z-index: -1;
+}
+
+.leaf-c1 {
+  top: -34px;
+  right: -16px;
+  width: clamp(64px, 6.5vw, 104px);
+  animation-duration: 8s;
+}
+
+.leaf-c2 {
+  bottom: -44px;
+  left: 44%;
+  width: clamp(60px, 6vw, 96px);
+  animation-delay: -2.5s;
+}
+
 /* About: rounded glass tiles over the particles */
 .bento {
   display: grid;
@@ -1206,6 +1287,15 @@ html .button.solid:hover {
 
 .hero-copy .button {
   margin-top: 24px;
+}
+
+/* MAX gets a deeper green than the other headlines */
+.hero2 .hero-name .bigtype-line.filled .ch {
+  background-image: linear-gradient(90deg, #04331c, #0b6e3d 60%, #138a4f);
+}
+
+html[data-theme='dark'] .hero2 .hero-name .bigtype-line.filled .ch {
+  background-image: linear-gradient(90deg, #0e9f6e, #16c172 60%, #34d399);
 }
 
 .hero2 .hero-name {
@@ -1649,6 +1739,20 @@ html .pill.on {
 
   .hero-stage .hero-cat {
     width: min(78vw, 420px);
+  }
+
+  /* Less open space on phones, so only a couple of leaves stay */
+  .leaf-h2,
+  .leaf-h3,
+  .leaf-w1,
+  .leaf-w2,
+  .leaf-c1 {
+    display: none;
+  }
+
+  .leaf-h1 {
+    left: 1%;
+    width: 30px;
   }
 
   .bento {
