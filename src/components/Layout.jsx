@@ -68,9 +68,6 @@ export default function Layout() {
       <SmoothScroll />
       <Intro />
       <header className="header">
-        <Link to="/" className="brand" aria-label="maxlovesher home">
-          <img src="/media/brand.webp" alt="" />
-        </Link>
         <ThemeSwitch />
       </header>
       <main className="main">

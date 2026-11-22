@@ -127,21 +127,9 @@ html.lenis body {
 /* Header */
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding-block: 24px;
-}
-
-.brand {
-  display: block;
-  width: clamp(140px, 18vw, 260px);
-  transition: transform 0.25s ease;
-}
-
-.brand img {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 
 .main:has(> .hero2) {
@@ -183,9 +171,6 @@ html.lenis body {
   transform: translateX(28px);
 }
 
-.brand:hover {
-  transform: scale(1.08);
-}
 
 .back,
 .label {
@@ -1050,7 +1035,7 @@ html .button.solid:hover {
   transform: none;
 }
 
-/* Home hero: the giant name first, with the cat lying on it, then an info row underneath */
+/* Home hero: the giant name first, then an info row underneath */
 .hero2 {
   padding-bottom: clamp(48px, 10vh, 120px);
 }
@@ -1058,14 +1043,6 @@ html .button.solid:hover {
 .hero-stage {
   display: flex;
   flex-direction: column;
-}
-
-.hero-stage .hero-cat {
-  position: relative;
-  z-index: 2;
-  align-self: flex-end;
-  width: min(38vw, 470px);
-  margin: 0 2% calc(-1 * min(8vw, 100px)) 0;
 }
 
 .hero-meta {
@@ -1121,24 +1098,24 @@ html .button.solid:hover {
   position: relative;
 }
 
-/* Hero: the open space left of the cat, above the M */
+/* Hero: the open strip to the right of MAX */
 .leaf-h1 {
-  top: 0;
-  left: 4%;
-  width: clamp(38px, 4.6vw, 66px);
+  top: 6%;
+  right: 8%;
+  width: clamp(40px, 6vw, 92px);
 }
 
 .leaf-h2 {
-  top: clamp(24px, 3vw, 44px);
-  left: 18%;
-  width: clamp(30px, 3.4vw, 50px);
+  top: 44%;
+  right: 18%;
+  width: clamp(32px, 4.4vw, 66px);
   animation-delay: -2s;
 }
 
 .leaf-h3 {
-  top: 4px;
-  left: 33%;
-  width: clamp(24px, 2.6vw, 38px);
+  top: 64%;
+  right: 3%;
+  width: clamp(24px, 3vw, 46px);
   animation-delay: -4s;
 }
 
@@ -1373,30 +1350,6 @@ html .pill.on {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-}
-
-/* Grid distortion: the canvas draws the image; the img underneath only sets the size */
-.distort {
-  position: relative;
-  display: block;
-}
-
-.distort img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.distort canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.distort.ready img {
-  opacity: 0;
 }
 
 /* Selected work: Spider-Man swings beside the heading, which stretches taller on scroll */
@@ -1737,10 +1690,6 @@ html .pill.on {
     grid-template-columns: 1fr;
   }
 
-  .hero-stage .hero-cat {
-    width: min(78vw, 420px);
-  }
-
   /* Less open space on phones, so only a couple of leaves stay */
   .leaf-h2,
   .leaf-h3,
@@ -1751,8 +1700,15 @@ html .pill.on {
   }
 
   .leaf-h1 {
-    left: 1%;
+    top: 8%;
+    right: 1%;
     width: 30px;
+  }
+
+  /* The poster sits on the left on phones, so the leaf moves to the right */
+  .leaf-c2 {
+    right: -8px;
+    left: auto;
   }
 
   .bento {

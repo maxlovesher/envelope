@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import BigType from '../components/BigType.jsx'
-import Distort from '../components/Distort.jsx'
 import Leaf from '../components/Leaf.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ProjectList from '../components/ProjectList.jsx'
@@ -75,7 +74,6 @@ export default function Home() {
           <Leaf className="leaf-h1" tone="deep" style={{ '--r': '-28deg' }} />
           <Leaf className="leaf-h2" shape="round" tone="fresh" style={{ '--r': '22deg' }} />
           <Leaf className="leaf-h3" tone="pale" style={{ '--r': '64deg' }} />
-          <Distort src="/media/cat.webp" alt="A tabby cat asleep, printed in blue and cream" className="hero-cat" />
           <BigType as="h1" lines={['Max']} className="hero-name" />
         </div>
         <div className="hero-meta">
