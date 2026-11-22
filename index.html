@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#140e33" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,9 +17,9 @@
     <script>
       try {
         var t = localStorage.getItem('prefs:theme')
-        document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light'
       } catch (e) {
-        document.documentElement.dataset.theme = 'dark'
+        document.documentElement.dataset.theme = 'light'
       }
     </script>
     <title>maxlovesher</title>

@@ -1,47 +1,48 @@
 :root {
-  /* Vibrant palette, shared with the particles: pink, orange, yellow, mint, blue, violet */
-  --c1: #ff4fa3;
-  --c2: #ff8a3d;
-  --c3: #ffcf3f;
-  --c4: #2fd9b0;
-  --c5: #4f7bff;
-  --c6: #a46bff;
-  --grad: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5), var(--c6));
-  --on-grad: #1d1442;
-  --bg: #fff5ea;
-  --text: #1d1442;
-  --muted: #6e6593;
-  --ghost: #cbbfe4;
-  --line: rgb(29 20 66 / 0.12);
-  --ink: #1d1442;
+  /* Fresh greens on white, shared with the particles */
+  --c1: #16c172;
+  --c2: #0e9f6e;
+  --c3: #c6f6da;
+  --c4: #86e3b0;
+  --c5: #34d399;
+  --c6: #0b6e3d;
+  --grad: linear-gradient(90deg, #0b6e3d, #16c172 55%, #6ee7a8);
+  --on-grad: #04301b;
+  --bg: #ffffff;
+  --text: #0b6e3d;
+  --muted: #4f7f66;
+  --ghost: #b8dcc7;
+  --line: rgb(11 110 61 / 0.14);
+  --ink: #0b6e3d;
   --on-ink: #fff;
-  --surface: rgb(255 255 255 / 0.55);
-  --panel: #fff9f2;
+  --surface: rgb(255 255 255 / 0.7);
+  --panel: #f6fdf9;
   --tint-amt: 100%;
   --stage: var(--bg);
   --gutter: clamp(20px, 4vw, 56px);
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
   --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  --accent: #7b5cff;
+  --accent: #16c172;
   --on-accent: #fff;
   color-scheme: light;
 }
 
-/* Deep violet rather than black, so the colours glow */
+/* Dark mode: deep green-black with mint text */
 html[data-theme='dark'] {
-  --bg: #140e33;
-  --text: #f5f0ff;
-  --muted: #a79fcd;
-  --ghost: #4b4278;
-  --line: rgb(255 255 255 / 0.1);
-  --ink: #f5f0ff;
-  --on-ink: #140e33;
-  --surface: rgb(255 255 255 / 0.05);
-  --panel: #1c1544;
+  --bg: #06140d;
+  --text: #c9f7dc;
+  --muted: #7fae94;
+  --ghost: #24493a;
+  --line: rgb(201 247 220 / 0.12);
+  --ink: #c9f7dc;
+  --on-ink: #06140d;
+  --surface: rgb(201 247 220 / 0.05);
+  --panel: #0b1f15;
+  --grad: linear-gradient(90deg, #16c172, #6ee7a8 55%, #c9f7dc);
   --tint-amt: 16%;
-  --accent: #9d86ff;
-  --on-accent: #140e33;
+  --accent: #34d399;
+  --on-accent: #06140d;
   color-scheme: dark;
 }
 
@@ -57,11 +58,10 @@ html[data-tint] {
 body {
   margin: 0;
   background-color: var(--stage);
-  /* Soft colour glows in the corners, so the page stays vibrant even with motion off */
+  /* A barely-there green wash in two corners, so white doesn't feel flat */
   background-image:
-    radial-gradient(60vmax 50vmax at 0% 0%, color-mix(in srgb, var(--c1) 16%, transparent), transparent 70%),
-    radial-gradient(50vmax 50vmax at 100% 30%, color-mix(in srgb, var(--c5) 16%, transparent), transparent 70%),
-    radial-gradient(60vmax 40vmax at 40% 100%, color-mix(in srgb, var(--c4) 12%, transparent), transparent 70%);
+    radial-gradient(60vmax 50vmax at 0% 0%, color-mix(in srgb, var(--c1) 7%, transparent), transparent 70%),
+    radial-gradient(50vmax 50vmax at 100% 100%, color-mix(in srgb, var(--c5) 6%, transparent), transparent 70%);
   background-attachment: fixed;
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;

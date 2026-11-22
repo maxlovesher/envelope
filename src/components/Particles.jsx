@@ -1,12 +1,18 @@
 import { useEffect, useRef } from 'react'
 import { usePrefs } from '../lib/prefs-context.js'
 
-// Same order as --c1…--c6 in index.css
-const COLORS = ['#ff4fa3', '#ff8a3d', '#ffcf3f', '#2fd9b0', '#4f7bff', '#a46bff']
-const REACH = 160 // px around the pointer that particles get swept by
+// Shades of the site's green
+const LIGHT = ['#0b6e3d', '#0e9f6e', '#16c172', '#34d399']
+const DARK = ['#16c172', '#34d399', '#6ee7b7', '#a7f3d0']
 
-// Particles drifting along a slowly turning flow behind the whole site. Each leaves a short
-// trail that fades out; near the pointer they swirl around it and get carried along.
+const SEE = 55 // px a particle can see its neighbours from
+const ROOM = 16 // px it tries to keep between itself and the nearest ones
+const MIN_SPEED = 1.2
+const MAX_SPEED = 3.2
+
+// A swarm: every particle steers toward its neighbours' centre, lines up with their heading
+// and keeps a little room, while the whole flock chases one target. The target wanders the
+// screen on its own and becomes the pointer whenever it moves.
 export default function Particles() {
   const ref = useRef(null)
   const { motion, theme } = usePrefs()
@@ -20,85 +26,107 @@ export default function Particles() {
       return
     }
 
-    const dark = theme === 'dark'
-    const pointer = { x: -1e4, y: -1e4, vx: 0, vy: 0 }
+    const colors = theme === 'dark' ? DARK : LIGHT
+    const pointer = { x: 0, y: 0, on: false, idle: 0 }
     let w = 0
     let h = 0
     let t = Math.random() * 100
     let frame = 0
-    let parts = []
-
-    const spawn = (p = {}) => {
-      p.x = Math.random() * w
-      p.y = Math.random() * h
-      p.life = 120 + Math.random() * 360
-      p.c = (Math.random() * COLORS.length) | 0
-      p.s = 0.5 + Math.random() * 1.1
-      return p
-    }
+    let flock = []
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
       w = window.innerWidth
       h = window.innerHeight
       canvas.width = Math.round(w * dpr)
       canvas.height = Math.round(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      parts = Array.from({ length: Math.min(900, Math.round((w * h) / 1700)) }, () => spawn())
+      const count = Math.max(90, Math.min(320, Math.round((w * h) / 5200)))
+      flock = Array.from({ length: count }, () => {
+        const a = Math.random() * Math.PI * 2
+        return {
+          x: w / 2 + (Math.random() - 0.5) * w * 0.6,
+          y: h / 2 + (Math.random() - 0.5) * h * 0.6,
+          vx: Math.cos(a) * 2,
+          vy: Math.sin(a) * 2,
+          c: (Math.random() * colors.length) | 0,
+        }
+      })
     }
 
-    // A few overlapping waves make a field that bends and drifts without repeating soon
-    const angle = (x, y) =>
-      Math.sin(x * 0.0021 + t * 0.25) * 1.6 +
-      Math.cos(y * 0.0017 - t * 0.18) * 1.6 +
-      Math.sin((x + y) * 0.0009 + t * 0.11) * 1.2
-
     const step = () => {
-      t += 0.01
+      t += 0.006
+      ctx.clearRect(0, 0, w, h)
 
-      // Thin the previous frame out toward transparent, which is what leaves the trails
-      ctx.globalCompositeOperation = 'destination-out'
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.07)'
-      ctx.fillRect(0, 0, w, h)
+      // Follow the pointer while it's moving, otherwise loop lazily around the screen
+      if (pointer.on && ++pointer.idle > 180) pointer.on = false
+      const tx = pointer.on ? pointer.x : w * (0.5 + 0.34 * Math.sin(t * 1.3))
+      const ty = pointer.on ? pointer.y : h * (0.5 + 0.3 * Math.sin(t * 1.9 + 1))
+      const pull = pointer.on ? 0.09 : 0.05
 
-      ctx.globalCompositeOperation = dark ? 'lighter' : 'source-over'
-      ctx.globalAlpha = dark ? 0.75 : 0.6
+      for (let i = 0; i < flock.length; i++) {
+        const b = flock[i]
+        let n = 0
+        let cx = 0
+        let cy = 0
+        let avx = 0
+        let avy = 0
+        let sx = 0
+        let sy = 0
+        for (let j = 0; j < flock.length; j++) {
+          if (j === i) continue
+          const o = flock[j]
+          const dx = o.x - b.x
+          const dy = o.y - b.y
+          const d2 = dx * dx + dy * dy
+          if (d2 > SEE * SEE) continue
+          n++
+          cx += o.x
+          cy += o.y
+          avx += o.vx
+          avy += o.vy
+          if (d2 < ROOM * ROOM) {
+            sx -= dx / (d2 || 1)
+            sy -= dy / (d2 || 1)
+          }
+        }
+        let ax = sx * 1.4
+        let ay = sy * 1.4
+        if (n) {
+          ax += (cx / n - b.x) * 0.0025 + (avx / n - b.vx) * 0.05
+          ay += (cy / n - b.y) * 0.0025 + (avy / n - b.vy) * 0.05
+        }
+        const gx = tx - b.x
+        const gy = ty - b.y
+        const gd = Math.hypot(gx, gy) || 1
+        ax += (gx / gd) * pull
+        ay += (gy / gd) * pull
+
+        b.vx += ax
+        b.vy += ay
+        const speed = Math.hypot(b.vx, b.vy) || 1
+        const clamped = Math.min(MAX_SPEED, Math.max(MIN_SPEED, speed))
+        b.vx = (b.vx / speed) * clamped
+        b.vy = (b.vy / speed) * clamped
+        b.x += b.vx
+        b.y += b.vy
+      }
+
+      // Each particle is a short dash pointing where it's heading; one path per shade
       ctx.lineCap = 'round'
-
-      // One path per colour keeps it to six strokes a frame
-      const paths = COLORS.map(() => new Path2D())
-      for (const p of parts) {
-        const a = angle(p.x, p.y)
-        let vx = Math.cos(a) * p.s
-        let vy = Math.sin(a) * p.s
-        const dx = p.x - pointer.x
-        const dy = p.y - pointer.y
-        const d2 = dx * dx + dy * dy
-        if (d2 < REACH * REACH) {
-          const f = 1 - Math.sqrt(d2) / REACH
-          vx += (-dy * 0.02 + dx * 0.008 + pointer.vx * 0.25) * f
-          vy += (dx * 0.02 + dy * 0.008 + pointer.vy * 0.25) * f
-        }
-        const ox = p.x
-        const oy = p.y
-        p.x += vx
-        p.y += vy
-        if (--p.life < 0 || p.x < -20 || p.x > w + 20 || p.y < -20 || p.y > h + 20) {
-          spawn(p)
-          continue
-        }
-        paths[p.c].moveTo(ox, oy)
-        paths[p.c].lineTo(p.x, p.y)
+      ctx.lineWidth = 2.6
+      ctx.globalAlpha = 0.9
+      const paths = colors.map(() => new Path2D())
+      for (const b of flock) {
+        paths[b.c].moveTo(b.x - b.vx * 2.2, b.y - b.vy * 2.2)
+        paths[b.c].lineTo(b.x, b.y)
       }
       paths.forEach((path, i) => {
-        ctx.strokeStyle = COLORS[i]
-        ctx.lineWidth = 1 + (i % 3) * 0.5
+        ctx.strokeStyle = colors[i]
         ctx.stroke(path)
       })
       ctx.globalAlpha = 1
 
-      pointer.vx *= 0.9
-      pointer.vy *= 0.9
       frame = requestAnimationFrame(step)
     }
 
@@ -111,20 +139,16 @@ export default function Particles() {
     }
     const onVisibility = () => (document.hidden ? stop() : start())
     const onMove = (e) => {
-      if (pointer.x > -1e4) {
-        pointer.vx = e.clientX - pointer.x
-        pointer.vy = e.clientY - pointer.y
-      }
       pointer.x = e.clientX
       pointer.y = e.clientY
+      pointer.on = true
+      pointer.idle = 0
     }
     const onLeave = () => {
-      pointer.x = -1e4
-      pointer.y = -1e4
+      pointer.on = false
     }
 
     resize()
-    ctx.clearRect(0, 0, w, h)
     start()
     window.addEventListener('resize', resize)
     window.addEventListener('pointermove', onMove, { passive: true })

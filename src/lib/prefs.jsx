@@ -23,8 +23,8 @@ export function PrefsProvider({ children }) {
     if (saved) return saved === 'on'
     return !window.matchMedia('(prefers-reduced-motion: reduce)').matches
   })
-  // Dark unless the visitor has switched to light
-  const [theme, setTheme] = useState(() => (read('prefs:theme') === 'light' ? 'light' : 'dark'))
+  // Light (white) unless the visitor has switched to dark
+  const [theme, setTheme] = useState(() => (read('prefs:theme') === 'dark' ? 'dark' : 'light'))
 
   useEffect(() => {
     document.documentElement.dataset.motion = motion ? 'on' : 'off'
