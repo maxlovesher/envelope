@@ -5,6 +5,7 @@ import Dock from './Dock.jsx'
 import Hud from './Hud.jsx'
 import Intro from './Intro.jsx'
 import Menu from './Menu.jsx'
+import Particles from './Particles.jsx'
 import SmoothScroll from './SmoothScroll.jsx'
 import { scrollToTop, setScrollLocked } from '../lib/scroll.js'
 import { usePrefs } from '../lib/prefs-context.js'
@@ -63,9 +64,10 @@ export default function Layout() {
 
   return (
     <>
+      <Particles />
       <SmoothScroll />
       <Intro />
-      <header className={`header${pathname === '/' ? ' header-home' : ''}`}>
+      <header className="header">
         <Link to="/" className="brand" aria-label="maxlovesher home">
           <img src="/media/brand.webp" alt="" />
         </Link>

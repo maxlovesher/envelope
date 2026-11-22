@@ -1,33 +1,47 @@
 :root {
-  --bg: #f7f7f7;
-  --text: #262626;
-  --muted: #8a8a8a;
-  --ghost: #c9c9c9;
-  --line: #dadada;
-  --ink: #111;
+  /* Vibrant palette, shared with the particles: pink, orange, yellow, mint, blue, violet */
+  --c1: #ff4fa3;
+  --c2: #ff8a3d;
+  --c3: #ffcf3f;
+  --c4: #2fd9b0;
+  --c5: #4f7bff;
+  --c6: #a46bff;
+  --grad: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5), var(--c6));
+  --on-grad: #1d1442;
+  --bg: #fff5ea;
+  --text: #1d1442;
+  --muted: #6e6593;
+  --ghost: #cbbfe4;
+  --line: rgb(29 20 66 / 0.12);
+  --ink: #1d1442;
   --on-ink: #fff;
+  --surface: rgb(255 255 255 / 0.55);
+  --panel: #fff9f2;
   --tint-amt: 100%;
   --stage: var(--bg);
   --gutter: clamp(20px, 4vw, 56px);
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
   --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  --accent: #f10000;
+  --accent: #7b5cff;
   --on-accent: #fff;
   color-scheme: light;
 }
 
+/* Deep violet rather than black, so the colours glow */
 html[data-theme='dark'] {
-  --bg: #0f0f10;
-  --text: #ececec;
-  --muted: #8e8e93;
-  --ghost: #3b3b40;
-  --line: #2a2a2e;
-  --ink: #f2f2f2;
-  --on-ink: #111;
+  --bg: #140e33;
+  --text: #f5f0ff;
+  --muted: #a79fcd;
+  --ghost: #4b4278;
+  --line: rgb(255 255 255 / 0.1);
+  --ink: #f5f0ff;
+  --on-ink: #140e33;
+  --surface: rgb(255 255 255 / 0.05);
+  --panel: #1c1544;
   --tint-amt: 16%;
-  --accent: #ff2d20;
-  --on-accent: #0f0f10;
+  --accent: #9d86ff;
+  --on-accent: #140e33;
   color-scheme: dark;
 }
 
@@ -43,6 +57,12 @@ html[data-tint] {
 body {
   margin: 0;
   background-color: var(--stage);
+  /* Soft colour glows in the corners, so the page stays vibrant even with motion off */
+  background-image:
+    radial-gradient(60vmax 50vmax at 0% 0%, color-mix(in srgb, var(--c1) 16%, transparent), transparent 70%),
+    radial-gradient(50vmax 50vmax at 100% 30%, color-mix(in srgb, var(--c5) 16%, transparent), transparent 70%),
+    radial-gradient(60vmax 40vmax at 40% 100%, color-mix(in srgb, var(--c4) 12%, transparent), transparent 70%);
+  background-attachment: fixed;
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-optical-sizing: auto;
@@ -69,6 +89,16 @@ h3 {
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.04em;
+}
+
+/* Flowing particles drawn behind everything (components/Particles.jsx) */
+.particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* Lenis smooth scroll */
@@ -114,25 +144,8 @@ html.lenis body {
   height: auto;
 }
 
-/* On the home page the image grows to fill the band above the hero, which drops its top padding
-   so the intro stays where it was */
-.header-home {
-  align-items: flex-start;
-  padding-bottom: 0;
-}
-
-.header-home .brand {
-  width: clamp(240px, 41vw, 660px);
-}
-
-/* Stretched a little taller than the image's own 2.1:1 to fill the band */
-.header-home .brand img {
-  aspect-ratio: 2 / 1;
-  object-fit: fill;
-}
-
-.main:has(> .hero-x) {
-  padding-top: 0;
+.main:has(> .hero2) {
+  padding-top: clamp(8px, 3vh, 32px);
 }
 
 /* Light/dark switch: a pill with a knob that slides between moon (dark) and sun (light) */
@@ -1021,9 +1034,15 @@ html .button.solid:hover {
     opacity 0.4s ease calc(var(--i) * 40ms);
 }
 
+/* Each letter shows its own slice of one gradient, so it runs across the whole word */
 .bigtype-line.filled .ch {
-  color: var(--accent);
+  color: transparent;
   -webkit-text-stroke: 0;
+  background-image: var(--grad);
+  background-size: calc(var(--n) * 100%) 100%;
+  background-position: calc(var(--j) / max(var(--n) - 1, 1) * 100%) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .bigtype.in .ch {
@@ -1031,11 +1050,135 @@ html .button.solid:hover {
   transform: none;
 }
 
-/* Home hero: cycling focus areas over a giant name */
-.hero-x {
+/* Home hero: the giant name first, with the cat lying on it, then an info row underneath */
+.hero2 {
+  padding-bottom: clamp(48px, 10vh, 120px);
+}
+
+.hero-stage {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stage .hero-cat {
+  position: relative;
+  z-index: 2;
+  align-self: flex-end;
+  width: min(38vw, 470px);
+  margin: 0 2% calc(-1 * min(8vw, 100px)) 0;
+}
+
+.hero-meta {
   display: grid;
-  gap: clamp(32px, 6vh, 64px);
-  padding-block: 0 clamp(48px, 10vh, 120px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) auto;
+  align-items: end;
+  gap: 24px clamp(24px, 4vw, 56px);
+  margin-top: clamp(28px, 5vh, 56px);
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.hero-hi {
+  max-width: 32ch;
+  margin: 0;
+  font-size: clamp(1.1rem, 1.7vw, 1.45rem);
+  line-height: 1.4;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-actions .button {
+  margin-top: 0;
+}
+
+/* About: rounded glass tiles over the particles */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(12px, 1.4vw, 18px);
+  margin-bottom: clamp(80px, 16vh, 180px);
+}
+
+.tile {
+  padding: clamp(22px, 2.6vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}
+
+.tile .label {
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+
+.tile-statement {
+  display: flex;
+  grid-column: span 4;
+  grid-row: span 2;
+  align-items: flex-end;
+}
+
+.tile-statement .reveal {
+  max-width: 20em;
+  font-size: clamp(1.6rem, 3.2vw, 3rem);
+}
+
+.tile-stat {
+  display: flex;
+  grid-column: span 2;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 150px;
+  border: 0;
+  background: var(--tile);
+  color: var(--on-grad);
+}
+
+.tile-stat b {
+  font-family: var(--display);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.tile-stat span {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.tile-how {
+  grid-column: span 4;
+}
+
+.tile-how ol {
+  display: grid;
+  gap: 18px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tile-how h3 {
+  margin-bottom: 6px;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.tile-how p {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.tile-stack {
+  grid-column: span 6;
 }
 
 .roles {
@@ -1065,10 +1208,10 @@ html .button.solid:hover {
   margin-top: 24px;
 }
 
-.hero .hero-name {
+.hero2 .hero-name {
   margin: 0;
   /* "MAX" in Anton is about 2em wide, so this keeps it inside the 1400px column */
-  font-size: clamp(5rem, 44vw, 640px);
+  font-size: clamp(5rem, 38vw, 560px);
   line-height: 0.78;
 }
 
@@ -1105,12 +1248,14 @@ html .button.solid:hover {
 }
 
 .marquee a:hover {
-  color: var(--accent);
-  -webkit-text-stroke-color: var(--accent);
+  background-image: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke-color: transparent;
 }
 
 .marquee .star {
-  color: var(--accent);
+  color: var(--c3);
   font-size: 0.4em;
   -webkit-text-stroke: 0;
 }
@@ -1121,13 +1266,13 @@ html .button.solid:hover {
   }
 }
 
-/* Accent red on the main interactive surfaces */
+/* The palette gradient on the main interactive surfaces */
 html .dock a.active,
 html .button.solid,
 html .pill.on {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--on-accent);
+  border-color: transparent;
+  background: var(--grad);
+  color: var(--on-grad);
 }
 
 ::selection {
@@ -1138,28 +1283,6 @@ html .pill.on {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-}
-
-/* Hero: intro on the left, the cat dozing on top of the name on the right */
-.hero-top {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  align-items: end;
-  gap: clamp(24px, 4vw, 64px);
-}
-
-.hero-intro {
-  display: grid;
-  gap: clamp(32px, 6vh, 64px);
-}
-
-.hero-cat {
-  position: relative;
-  z-index: 1;
-  justify-self: end;
-  width: 100%;
-  max-width: 640px;
-  margin-bottom: calc(-1 * clamp(10px, 2.5vw, 36px));
 }
 
 /* Grid distortion: the canvas draws the image; the img underneath only sets the size */
@@ -1220,7 +1343,7 @@ html .pill.on {
   transform-origin: 0 0;
 }
 
-/* Closing call to action, with the galaxy poster drifting beside it over faint stars */
+/* Closing call to action: a panel with a gradient rim, the galaxy poster drifting beside it */
 .cta {
   position: relative;
   isolation: isolate;
@@ -1229,12 +1352,19 @@ html .pill.on {
   align-items: center;
   gap: clamp(32px, 6vw, 96px);
   margin-top: clamp(100px, 20vh, 220px);
+  padding: clamp(28px, 5vw, 72px);
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 36px;
+  background:
+    linear-gradient(var(--panel), var(--panel)) padding-box,
+    var(--grad) border-box;
 }
 
 .cta::before {
   content: '';
   position: absolute;
-  inset: -12% -4%;
+  inset: 0;
   z-index: -1;
   background-image:
     radial-gradient(1.5px 1.5px at 8% 18%, var(--text) 50%, transparent 52%),
@@ -1512,14 +1642,30 @@ html .pill.on {
 }
 
 @media (max-width: 720px) {
-  .hero-top,
+  .hero-meta,
   .cta {
     grid-template-columns: 1fr;
   }
 
-  .hero-cat {
-    justify-self: center;
-    max-width: 440px;
+  .hero-stage .hero-cat {
+    width: min(78vw, 420px);
+  }
+
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tile-statement,
+  .tile-how,
+  .tile-stack,
+  .tile-stat:nth-child(4) {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+
+  .tile-stat {
+    grid-column: span 1;
+    min-height: 120px;
   }
 
   .spidey {

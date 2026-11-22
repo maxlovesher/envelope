@@ -55,7 +55,8 @@ export default function BigType({ lines, filled = [0], as: Tag = 'h2', className
       {lines.map((line, i) => (
         <span key={line} className={`bigtype-line${filled.includes(i) ? ' filled' : ''}`} aria-hidden="true">
           {[...line].map((ch, j) => (
-            <span key={j} className="ch" style={{ '--i': n++ }}>
+            // --j/--n let filled lines slice one gradient across the whole word
+            <span key={j} className="ch" style={{ '--i': n++, '--j': j, '--n': line.length }}>
               {ch === ' ' ? ' ' : ch}
             </span>
           ))}

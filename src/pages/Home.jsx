@@ -42,10 +42,11 @@ const stack = (() => {
   return [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
 })()
 
+// Each stat tile gets one of the palette colours
 const numbers = [
-  { value: projects.length, label: 'Projects' },
-  { value: live, label: 'Live sites' },
-  { value: stack.length, label: 'Technologies' },
+  { value: projects.length, label: 'Projects', color: 'var(--c1)' },
+  { value: live, label: 'Live sites', color: 'var(--c3)' },
+  { value: stack.length, label: 'Technologies', color: 'var(--c4)' },
 ]
 
 // Habits that show up across the case studies.
@@ -68,65 +69,68 @@ export default function Home() {
   useTitle(null)
   return (
     <>
-      <section className="hero hero-x">
-        <div className="hero-top">
-          <div className="hero-intro">
-            <Roles />
-            <div className="hero-copy">
-              <p>
-                <em className="serif">Hey, I&apos;m</em> Max. I build things.
-              </p>
-              <Link to="/projects" className="button" data-cursor="Work">
-                See my work
-              </Link>
-            </div>
-          </div>
+      <section className="hero2">
+        <div className="hero-stage">
           <Distort src="/media/cat.webp" alt="A tabby cat asleep, printed in blue and cream" className="hero-cat" />
+          <BigType as="h1" lines={['Max']} className="hero-name" />
         </div>
-        <BigType as="h1" lines={['Max']} className="hero-name" />
+        <div className="hero-meta">
+          <Roles />
+          <p className="hero-hi">
+            <em className="serif">Hey, I&apos;m</em> Max. I build things, from red-teaming harnesses to a vinyl
+            player that runs in your browser.
+          </p>
+          <div className="hero-actions">
+            <Link to="/projects" className="button solid" data-cursor="Work">
+              See my work
+            </Link>
+            <a className="button" href="https://github.com/maxlovesher" target="_blank" rel="noreferrer">
+              GitHub ↗
+            </a>
+          </div>
+        </div>
       </section>
       <Marquee />
-      <section className="statement">
-        <Reveal
-          as="p"
-          text="I build across AI evaluation, computer vision, music and the web, from red-teaming harnesses to a vinyl player that runs in your browser."
-        />
-      </section>
-      <dl className="stats home-stats">
+      <section className="bento" aria-label="About">
+        <div className="tile tile-statement">
+          <Reveal
+            as="p"
+            text="I build across AI evaluation, computer vision, music and the web, and I like the work to show its numbers."
+          />
+        </div>
         {numbers.map((n) => (
-          <div key={n.label}>
-            <dt>{n.value}</dt>
-            <dd>{n.label}</dd>
+          <div key={n.label} className="tile tile-stat" style={{ '--tile': n.color }}>
+            <b>{n.value}</b>
+            <span>{n.label}</span>
           </div>
         ))}
-      </dl>
+        <div className="tile tile-how">
+          <h2 className="label">How I work</h2>
+          <ol>
+            {principles.map((p) => (
+              <li key={p.title}>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="tile tile-stack">
+          <h2 className="label">Built with</h2>
+          <ul className="tags flat">
+            {stack.map(([name, n]) => (
+              <li key={name}>
+                {name}
+                {n > 1 && <b> ×{n}</b>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
       <section className="work">
         <img className="spidey" src="/media/spidey.png" alt="" aria-hidden="true" />
         <BigType lines={['Stuff', 'I built']} stretch={1.9} />
         <ProjectList />
-      </section>
-      <section className="home-block">
-        <h2 className="label">How I work</h2>
-        <ul className="highlights">
-          {principles.map((p, i) => (
-            <li key={p.title}>
-              <span className="num">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="home-block">
-        <h2 className="label">Built with</h2>
-        <ul className="tags flat">
-          {stack.map(([name, n]) => (
-            <li key={name}>
-              {name}
-              {n > 1 && <b> ×{n}</b>}
-            </li>
-          ))}
-        </ul>
       </section>
       <section className="cta">
         <div className="cta-copy">
