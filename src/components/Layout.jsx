@@ -5,6 +5,7 @@ import Dock from './Dock.jsx'
 import Hud from './Hud.jsx'
 import Intro from './Intro.jsx'
 import Menu from './Menu.jsx'
+import PalettePicker from './PalettePicker.jsx'
 import Particles from './Particles.jsx'
 import SmoothScroll from './SmoothScroll.jsx'
 import { scrollToTop, setScrollLocked } from '../lib/scroll.js'
@@ -46,6 +47,8 @@ export default function Layout() {
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
+  const [colorsOpen, setColorsOpen] = useState(false)
+  const colorsRef = useRef(null)
 
   useEffect(() => {
     scrollToTop()
@@ -61,6 +64,8 @@ export default function Layout() {
     setMenuOpen(false)
     menuRef.current?.focus()
   }, [])
+
+  const closeColors = useCallback(() => setColorsOpen(false), [])
 
   return (
     <>
@@ -86,7 +91,14 @@ export default function Layout() {
         </span>
       </footer>
       <Hud />
-      <Dock onMenu={() => setMenuOpen(true)} menuRef={menuRef} />
+      <Dock
+        onMenu={() => setMenuOpen(true)}
+        menuRef={menuRef}
+        onColors={() => setColorsOpen((o) => !o)}
+        colorsRef={colorsRef}
+        colorsOpen={colorsOpen}
+      />
+      <PalettePicker open={colorsOpen} onClose={closeColors} triggerRef={colorsRef} />
       <Menu open={menuOpen} onClose={closeMenu} />
       <Cursor />
     </>

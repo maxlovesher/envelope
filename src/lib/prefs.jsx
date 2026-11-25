@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { PrefsContext } from './prefs-context.js'
+import { DEFAULT_PALETTE, PALETTES, applyPalette, paletteById } from './palettes.js'
 
 function read(key) {
   try {
@@ -30,14 +31,29 @@ export function PrefsProvider({ children }) {
     document.documentElement.dataset.motion = motion ? 'on' : 'off'
   }, [motion])
 
+  // Colour palette picked in the Colours panel; unknown ids fall back to the default
+  const [palette, setPaletteState] = useState(() => {
+    const saved = read('prefs:palette')
+    return PALETTES.some((p) => p.id === saved) ? saved : DEFAULT_PALETTE
+  })
+
   useEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])
+
+  useEffect(() => {
+    applyPalette(paletteById(palette))
+  }, [palette])
 
   const value = useMemo(
     () => ({
       motion,
       theme,
+      palette,
+      setPalette: (id) => {
+        write('prefs:palette', id)
+        setPaletteState(id)
+      },
       toggleMotion: () => {
         write('prefs:motion', motion ? 'off' : 'on')
         setMotion(!motion)
@@ -48,7 +64,7 @@ export function PrefsProvider({ children }) {
         setTheme(next)
       },
     }),
-    [motion, theme],
+    [motion, theme, palette],
   )
 
   return <PrefsContext.Provider value={value}>{children}</PrefsContext.Provider>

@@ -14,10 +14,11 @@ const VEINS = [
   [102, 72, 90],
 ]
 
+// Tones come from the active palette's CSS variables (lib/palettes.js)
 const TONES = {
-  fresh: ['#34d399', '#0e9f6e'],
-  deep: ['#16c172', '#0b6e3d'],
-  pale: ['#c6f6da', '#86e3b0'],
+  fresh: ['var(--p3)', 'var(--p0)'],
+  deep: ['var(--p0)', 'var(--p-ink)'],
+  pale: ['var(--p1)', 'var(--p2)'],
 }
 
 // A decorative leaf drawn in SVG. Sways gently from its stem; purely decorative.
@@ -28,8 +29,9 @@ export default function Leaf({ shape = 'slim', tone = 'fresh', className = '', s
     <svg className={`leaf ${className}`} style={style} viewBox="0 0 100 160" aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={from} />
-          <stop offset="1" stopColor={to} />
+          {/* style, not attributes, so the var() colours resolve */}
+          <stop offset="0" style={{ stopColor: from }} />
+          <stop offset="1" style={{ stopColor: to }} />
         </linearGradient>
       </defs>
       <path d={SHAPES[shape]} fill={`url(#${id})`} />
@@ -42,7 +44,7 @@ export default function Leaf({ shape = 'slim', tone = 'fresh', className = '', s
           </g>
         ))}
       </g>
-      <path d="M50 146 L50 160" stroke={to} strokeWidth="3" strokeLinecap="round" />
+      <path d="M50 146 L50 160" style={{ stroke: to }} strokeWidth="3" strokeLinecap="round" />
     </svg>
   )
 }

@@ -1,9 +1,6 @@
 import { useEffect, useRef } from 'react'
+import { paletteById, swarmColors } from '../lib/palettes.js'
 import { usePrefs } from '../lib/prefs-context.js'
-
-// Shades of the site's green
-const LIGHT = ['#0b6e3d', '#0e9f6e', '#16c172', '#34d399']
-const DARK = ['#16c172', '#34d399', '#6ee7b7', '#a7f3d0']
 
 const SEE = 55 // px a particle can see its neighbours from
 const ROOM = 16 // px it tries to keep between itself and the nearest ones
@@ -15,7 +12,7 @@ const MAX_SPEED = 3.2
 // screen on its own and becomes the pointer whenever it moves.
 export default function Particles() {
   const ref = useRef(null)
-  const { motion, theme } = usePrefs()
+  const { motion, theme, palette } = usePrefs()
 
   useEffect(() => {
     const canvas = ref.current
@@ -26,7 +23,8 @@ export default function Particles() {
       return
     }
 
-    const colors = theme === 'dark' ? DARK : LIGHT
+    // Colours follow the chosen palette; the movement doesn't change
+    const colors = swarmColors(paletteById(palette), theme === 'dark')
     const pointer = { x: 0, y: 0, on: false, idle: 0 }
     let w = 0
     let h = 0
@@ -161,7 +159,7 @@ export default function Particles() {
       document.removeEventListener('pointerleave', onLeave)
       document.removeEventListener('visibilitychange', onVisibility)
     }
-  }, [motion, theme])
+  }, [motion, theme, palette])
 
   return <canvas ref={ref} className="particles" aria-hidden="true" />
 }

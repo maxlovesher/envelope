@@ -1,50 +1,56 @@
 :root {
-  /* Fresh greens on white, shared with the particles */
-  --c1: #16c172;
-  --c2: #0e9f6e;
-  --c3: #c6f6da;
-  --c4: #86e3b0;
-  --c5: #34d399;
-  --c6: #0b6e3d;
-  /* One solid green for big type and buttons; kept as an image so text clipping still works */
-  --grad: linear-gradient(#0b6e3d, #0b6e3d);
+  /* Palette: lib/palettes.js writes these when a visitor picks one; the defaults are "Fresh" */
+  --p-ink: #0b6e3d;
+  --p-main: #16c172;
+  --p0: #16c172;
+  --p1: #c6f6da;
+  --p2: #86e3b0;
+  --p3: #34d399;
+  --p4: #0e9f6e;
+  /* Every other colour is built from the palette */
+  --c1: var(--p0);
+  --c3: var(--p1);
+  --c4: var(--p2);
+  --c5: var(--p3);
+  /* One solid colour for big type and buttons; kept as an image so text clipping still works */
+  --grad: linear-gradient(var(--p-ink), var(--p-ink));
   --on-grad: #fff;
   --bg: #ffffff;
-  --text: #0b6e3d;
-  --muted: #4f7f66;
-  --ghost: #b8dcc7;
-  --line: rgb(11 110 61 / 0.14);
-  --ink: #0b6e3d;
+  --text: var(--p-ink);
+  --muted: color-mix(in srgb, var(--p-ink) 72%, #fff);
+  --ghost: color-mix(in srgb, var(--p-ink) 30%, #fff);
+  --line: color-mix(in srgb, var(--p-ink) 14%, transparent);
+  --ink: var(--p-ink);
   --on-ink: #fff;
   --surface: rgb(255 255 255 / 0.7);
-  --panel: #f6fdf9;
+  --panel: color-mix(in srgb, var(--p1) 14%, #fff);
   --tint-amt: 100%;
   --stage: var(--bg);
   --gutter: clamp(20px, 4vw, 56px);
   --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
   --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  --accent: #16c172;
+  --accent: var(--p-main);
   --on-accent: #fff;
   color-scheme: light;
 }
 
-/* Dark mode: deep green-black with mint text */
+/* Dark mode: a near-black tinted by the palette, light text, big type in its boldest colour */
 html[data-theme='dark'] {
-  --bg: #06140d;
-  --text: #c9f7dc;
-  --muted: #7fae94;
-  --ghost: #24493a;
-  --line: rgb(201 247 220 / 0.12);
-  --ink: #c9f7dc;
-  --on-ink: #06140d;
-  --surface: rgb(201 247 220 / 0.05);
-  --panel: #0b1f15;
-  --grad: linear-gradient(#34d399, #34d399);
-  --on-grad: #06140d;
+  --bg: color-mix(in srgb, var(--p-ink) 16%, #050607);
+  --text: color-mix(in srgb, var(--p-main) 18%, #f4f6f5);
+  --muted: color-mix(in srgb, var(--text) 62%, var(--bg));
+  --ghost: color-mix(in srgb, var(--text) 24%, var(--bg));
+  --line: color-mix(in srgb, var(--text) 12%, transparent);
+  --ink: var(--text);
+  --on-ink: var(--bg);
+  --surface: color-mix(in srgb, var(--text) 5%, transparent);
+  --panel: color-mix(in srgb, var(--p-main) 8%, var(--bg));
+  --grad: linear-gradient(var(--p-main), var(--p-main));
+  --on-grad: #0b0c0d;
   --tint-amt: 16%;
-  --accent: #34d399;
-  --on-accent: #06140d;
+  --accent: var(--p-main);
+  --on-accent: #0b0c0d;
   color-scheme: dark;
 }
 
@@ -1083,7 +1089,7 @@ html .button.solid:hover {
   transform: rotate(var(--r, 0deg));
   transform-origin: 50% 100%;
   animation: sway 6s ease-in-out infinite;
-  filter: drop-shadow(0 6px 10px rgb(11 110 61 / 0.15));
+  filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--p-ink) 16%, transparent));
 }
 
 @keyframes sway {
@@ -1197,8 +1203,8 @@ html .button.solid:hover {
   min-height: 150px;
   border: 0;
   background: var(--tile);
-  /* The tiles are light greens, so they keep dark text whatever the buttons use */
-  color: #04301b;
+  /* Palette tiles range from pale to mid-bright, so near-black text reads on all of them */
+  color: #15151a;
 }
 
 .tile-stat b {
@@ -1329,6 +1335,7 @@ html .button.solid:hover {
 
 /* The palette gradient on the main interactive surfaces */
 html .dock a.active,
+html .dock button.active,
 html .button.solid,
 html .pill.on {
   border-color: transparent;
@@ -1541,6 +1548,164 @@ html .pill.on {
   color: var(--on-ink);
 }
 
+/* Colours panel: pick a colour, then one of the palettes that uses it */
+.palette-panel {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  z-index: 70;
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(72vh, 640px);
+  padding: 20px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 16px) scale(0.98);
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s 0.35s;
+}
+
+.palette-panel.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s;
+}
+
+.palette-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.palette-head .label {
+  margin: 0;
+}
+
+.palette-head-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.palette-head-actions .pill {
+  padding: 7px 14px;
+  font-size: 0.75rem;
+}
+
+.palette-step {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.palette-step span {
+  font-family: var(--mono);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 8px;
+}
+
+.swatch-btn {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: var(--sw);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.swatch-btn:hover {
+  transform: scale(1.12);
+}
+
+.swatch-btn.on {
+  border-color: var(--bg);
+  outline: 2px solid var(--text);
+  transform: scale(1.12);
+}
+
+.palette-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.palette-option {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.palette-option:hover {
+  background: var(--surface);
+}
+
+.palette-option.on {
+  border-color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--text);
+}
+
+.palette-strip {
+  display: flex;
+  overflow: hidden;
+  height: 22px;
+  border-radius: 7px;
+}
+
+.palette-strip i {
+  flex: 1;
+}
+
+.palette-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.palette-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
 /* Corner readout */
 .hud {
   position: fixed;
@@ -1682,6 +1847,14 @@ html .pill.on {
   .hero-meta,
   .cta {
     grid-template-columns: 1fr;
+  }
+
+  /* Four dock buttons have to fit a phone's width */
+  .dock a,
+  .dock button {
+    padding: 9px 11px;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
   }
 
   /* Less open space on phones, so only a couple of leaves stay */
