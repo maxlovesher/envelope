@@ -6,8 +6,9 @@
   --c4: #86e3b0;
   --c5: #34d399;
   --c6: #0b6e3d;
-  --grad: linear-gradient(90deg, #0b6e3d, #16c172 55%, #6ee7a8);
-  --on-grad: #04301b;
+  /* One solid green for big type and buttons; kept as an image so text clipping still works */
+  --grad: linear-gradient(#0b6e3d, #0b6e3d);
+  --on-grad: #fff;
   --bg: #ffffff;
   --text: #0b6e3d;
   --muted: #4f7f66;
@@ -39,7 +40,8 @@ html[data-theme='dark'] {
   --on-ink: #06140d;
   --surface: rgb(201 247 220 / 0.05);
   --panel: #0b1f15;
-  --grad: linear-gradient(90deg, #16c172, #6ee7a8 55%, #c9f7dc);
+  --grad: linear-gradient(#34d399, #34d399);
+  --on-grad: #06140d;
   --tint-amt: 16%;
   --accent: #34d399;
   --on-accent: #06140d;
@@ -1195,7 +1197,8 @@ html .button.solid:hover {
   min-height: 150px;
   border: 0;
   background: var(--tile);
-  color: var(--on-grad);
+  /* The tiles are light greens, so they keep dark text whatever the buttons use */
+  color: #04301b;
 }
 
 .tile-stat b {
@@ -1264,15 +1267,6 @@ html .button.solid:hover {
 
 .hero-copy .button {
   margin-top: 24px;
-}
-
-/* MAX gets a deeper green than the other headlines */
-.hero2 .hero-name .bigtype-line.filled .ch {
-  background-image: linear-gradient(90deg, #04331c, #0b6e3d 60%, #138a4f);
-}
-
-html[data-theme='dark'] .hero2 .hero-name .bigtype-line.filled .ch {
-  background-image: linear-gradient(90deg, #0e9f6e, #16c172 60%, #34d399);
 }
 
 .hero2 .hero-name {
